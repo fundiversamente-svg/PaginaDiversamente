@@ -46,20 +46,20 @@ export default function Navbar() {
     <header
       className={`fixed top-0 left-0 right-0 w-full z-50 transition-all duration-300 ${
         isScrolled
-          ? 'bg-surface/90 dark:bg-surface-dim/90 backdrop-blur-md shadow-ambient-1 py-3 border-b border-border/40'
-          : 'bg-transparent py-5'
+          ? 'bg-surface/95 dark:bg-surface-dim/95 backdrop-blur-md shadow-ambient-1 py-3 border-b border-border/40'
+          : 'bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-sm sm:bg-transparent py-4 sm:py-5'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
         {/* Brand / Logo */}
         <Link
           href="/"
-          className="group flex items-center gap-2 text-2xl font-headline font-semibold text-primary tracking-tight transition-transform duration-300 hover:scale-[1.02]"
+          className="group flex items-center gap-2 text-xl sm:text-2xl font-headline font-semibold text-primary tracking-tight transition-transform duration-300 hover:scale-[1.02]"
         >
-          <div className="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container">
+          <div className="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container flex-shrink-0">
             <Sparkles className="w-4 h-4 text-secondary" />
           </div>
-          <span>Diversamente</span>
+          <span className="truncate">Diversamente</span>
         </Link>
 
         {/* Desktop Navigation Links */}
@@ -105,8 +105,8 @@ export default function Navbar() {
           )}
         </nav>
 
-        {/* Actions: Theme Toggle, Auth, Donate */}
-        <div className="hidden sm:flex items-center gap-3">
+        {/* Desktop Actions: Theme Toggle, Auth, Donate */}
+        <div className="hidden lg:flex items-center gap-3">
           <ThemeToggle />
 
           {/* User Auth Section */}
@@ -192,13 +192,13 @@ export default function Navbar() {
           </Link>
         </div>
 
-        {/* Mobile menu button */}
-        <div className="flex sm:hidden items-center gap-2">
+        {/* Mobile controls (visible for all screens < 1024px) */}
+        <div className="flex lg:hidden items-center gap-2">
           <ThemeToggle />
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 rounded-lg text-primary hover:bg-surface-container-low focus:outline-none"
+            className="p-2.5 rounded-xl text-primary bg-surface-container-low hover:bg-surface-container-high border border-border focus:outline-none transition-colors"
             aria-label={mobileMenuOpen ? 'Cerrar menú' : 'Abrir menú'}
           >
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -206,17 +206,19 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Drawer Menu */}
+      {/* Mobile Drawer Menu (full width, scrollable, covers all items) */}
       {mobileMenuOpen && (
-        <div className="sm:hidden fixed inset-x-0 top-full bg-surface/98 dark:bg-surface-dim/98 backdrop-blur-xl border-b border-border shadow-ambient-2 px-6 py-6 animate-fadeIn">
-          <nav className="flex flex-col gap-3">
+        <div className="lg:hidden fixed inset-x-0 top-full max-h-[calc(100vh-70px)] overflow-y-auto bg-surface/98 dark:bg-surface-dim/98 backdrop-blur-2xl border-b border-border shadow-2xl px-6 py-6 animate-fadeIn z-50">
+          <nav className="flex flex-col gap-3 pb-8">
+            {/* Quick Admin Access Button on Mobile if Admin */}
             {isAdministrator && (
               <Link
                 href="/admin"
-                className="w-full flex items-center justify-center gap-2 bg-primary text-on-primary font-label text-sm font-bold py-2.5 rounded-xl shadow-sm mb-2"
+                onClick={() => setMobileMenuOpen(false)}
+                className="w-full flex items-center justify-center gap-2 bg-primary text-on-primary font-label text-sm font-bold py-3 rounded-2xl shadow-sm mb-2"
               >
                 <ShieldCheck className="w-4 h-4" />
-                <span>Ir al Panel de Administración</span>
+                <span>Panel de Administración</span>
               </Link>
             )}
 
@@ -226,7 +228,8 @@ export default function Navbar() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`text-base font-label font-medium py-2 px-3 rounded-lg transition-colors flex items-center justify-between ${
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`text-base font-label font-medium py-2.5 px-4 rounded-xl transition-colors flex items-center justify-between ${
                     isActive
                       ? 'bg-secondary-container text-on-secondary-container font-semibold'
                       : 'text-on-surface-variant hover:text-primary hover:bg-surface-container-low'
@@ -242,15 +245,32 @@ export default function Navbar() {
               );
             })}
 
-            <div className="pt-4 border-t border-border flex flex-col gap-3">
+            <div className="pt-4 border-t border-border flex flex-col gap-3 mt-2">
               {user ? (
                 <div className="flex flex-col gap-2">
-                  <div className="text-xs text-on-surface-variant px-3">
-                    Sesión iniciada como <strong>{profile?.full_name || user.email}</strong>
+                  <div className="p-3 bg-surface-container-low rounded-xl border border-border text-xs text-on-surface-variant">
+                    <p className="font-semibold text-on-surface truncate">{profile?.full_name || 'Mi Cuenta'}</p>
+                    <p className="text-[11px] truncate opacity-80">{user.email}</p>
+                    <span className="inline-block mt-1 px-2 py-0.5 rounded text-[10px] font-bold bg-secondary-container text-on-secondary-container">
+                      {isAdministrator ? 'Administrador' : 'Suscriptor Activo'}
+                    </span>
                   </div>
+
+                  <Link
+                    href="/suscriptores"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="w-full flex items-center justify-center gap-2 bg-surface-container-low text-on-surface font-label text-sm font-semibold py-2.5 rounded-xl border border-border"
+                  >
+                    <Sparkles className="w-4 h-4 text-secondary" />
+                    <span>Contenido Exclusivo</span>
+                  </Link>
+
                   <button
-                    onClick={() => signOut()}
-                    className="w-full flex items-center justify-center gap-2 bg-red-50 dark:bg-red-950/40 text-red-700 dark:text-red-300 font-label text-xs font-semibold py-2 rounded-lg"
+                    onClick={() => {
+                      signOut();
+                      setMobileMenuOpen(false);
+                    }}
+                    className="w-full flex items-center justify-center gap-2 bg-red-50 dark:bg-red-950/40 text-red-700 dark:text-red-300 font-label text-xs font-semibold py-2.5 rounded-xl border border-red-200/50"
                   >
                     <LogOut className="w-3.5 h-3.5" />
                     <span>Cerrar Sesión</span>
@@ -259,7 +279,8 @@ export default function Navbar() {
               ) : (
                 <Link
                   href="/login"
-                  className="w-full flex items-center justify-center gap-2 bg-surface-container-low text-on-surface font-label text-sm font-semibold py-2.5 rounded-lg border border-border"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="w-full flex items-center justify-center gap-2 bg-surface-container-low text-on-surface font-label text-sm font-semibold py-3 rounded-xl border border-border"
                 >
                   <User className="w-4 h-4 text-on-surface-variant" />
                   <span>Ingresar a mi Cuenta</span>
@@ -268,10 +289,11 @@ export default function Navbar() {
 
               <Link
                 href="/donar"
-                className="w-full flex items-center justify-center gap-2 bg-primary text-on-primary font-label text-sm font-semibold py-2.5 rounded-lg"
+                onClick={() => setMobileMenuOpen(false)}
+                className="w-full flex items-center justify-center gap-2 bg-primary text-on-primary font-label text-sm font-semibold py-3 rounded-xl shadow-sm"
               >
                 <Heart className="w-4 h-4 fill-current opacity-80" />
-                <span>Donar</span>
+                <span>Donar al Proyecto</span>
               </Link>
             </div>
           </nav>

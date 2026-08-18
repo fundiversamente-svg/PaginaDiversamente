@@ -45,6 +45,13 @@
   --font-atkinson: 'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', sans-serif;
 }
 
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
+  scroll-behavior: smooth;
+}
+
 .dark {
   /* DARK MODE (Organic Serenity Dark - DESIGN.md) */
   --color-surface: #131412;
