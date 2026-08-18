@@ -74,20 +74,7 @@ export default function AdminPortalPage() {
   const [confirmPassword, setConfirmPassword] = useState('');
 
   const { showToast } = useToast();
-  const isAdmin = role === 'admin' || (typeof window !== 'undefined' && localStorage.getItem('diversamente_admin_unlocked') === 'true');
-
-  const handlePinLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (pin === 'diversamente2024' || pin === 'admin123' || pin === '1234') {
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('diversamente_admin_unlocked', 'true');
-      }
-      showToast('Acceso administrativo concedido', 'success');
-      window.location.reload();
-    } else {
-      showToast('PIN incorrecto. Intenta con: diversamente2024', 'error');
-    }
-  };
+  const isAdmin = role === 'admin';
 
   const loadFromLocal = useCallback((tableName: string) => {
     if (typeof window !== 'undefined') {
@@ -325,16 +312,52 @@ export default function AdminPortalPage() {
     }
 
     setLoading(true);
+    const targetEmail = profile?.email || user?.email || 'fundiversamente@gmail.com';
+
     if (supabase && isSupabaseConfigured) {
       try {
-        const { error } = await supabase.auth.updateUser({ password: newPassword });
-        if (error) {
-          showToast('Error al actualizar contraseña: ' + error.message, 'error');
+        // Verificar si hay sesión activa en Supabase Auth
+        const { data: sessionData } = await supabase.auth.getSession();
+
+        if (sessionData?.session?.user) {
+          const { error } = await supabase.auth.updateUser({ password: newPassword });
+          if (error) {
+            if (error.status === 429 || error.message?.includes('rate limit') || error.message?.includes('429')) {
+              showToast('Límite de solicitudes de Supabase alcanzado (Error 429). Espera unos minutos o define la contraseña en el dashboard de Supabase.', 'error');
+            } else {
+              showToast('Error al actualizar contraseña: ' + error.message, 'error');
+            }
+          } else {
+            showToast('¡Contraseña actualizada con éxito en Supabase!', 'success');
+            setIsChangePasswordModalOpen(false);
+            setNewPassword('');
+            setConfirmPassword('');
+          }
         } else {
-          showToast('¡Contraseña actualizada con éxito!', 'success');
-          setIsChangePasswordModalOpen(false);
-          setNewPassword('');
-          setConfirmPassword('');
+          // Si no había sesión activa en Supabase Auth, registrar la cuenta con la nueva clave
+          const { error: signUpError } = await supabase.auth.signUp({
+            email: targetEmail,
+            password: newPassword,
+            options: {
+              data: {
+                full_name: 'Administrador Diversamente',
+                role: 'admin',
+              },
+            },
+          });
+
+          if (signUpError) {
+            if (signUpError.status === 429 || signUpError.message?.includes('rate limit') || signUpError.message?.includes('429')) {
+              showToast('Límite de intentos de Supabase alcanzado (429). Puedes configurar la contraseña en el panel de Supabase -> Authentication -> Users.', 'error');
+            } else {
+              showToast('Nota: ' + signUpError.message, 'info');
+            }
+          } else {
+            showToast('¡Contraseña establecida exitosamente!', 'success');
+            setIsChangePasswordModalOpen(false);
+            setNewPassword('');
+            setConfirmPassword('');
+          }
         }
       } catch (err: any) {
         showToast('Error: ' + err.message, 'error');
@@ -373,42 +396,23 @@ export default function AdminPortalPage() {
     return (
       <div className="min-h-[75vh] flex items-center justify-center px-4 py-12">
         <div className="max-w-md w-full bg-surface rounded-3xl p-8 border border-border shadow-ambient-2 text-center">
-          <div className="w-14 h-14 rounded-full bg-primary/10 text-primary flex items-center justify-center mx-auto mb-4">
+          <div className="w-14 h-14 rounded-full bg-red-100 dark:bg-red-950/60 text-red-600 dark:text-red-400 flex items-center justify-center mx-auto mb-4">
             <Lock className="w-6 h-6" />
           </div>
-          <h2 className="text-2xl font-headline font-semibold text-primary mb-1">
-            Portal de Administración
+          <h2 className="text-2xl font-headline font-semibold text-on-surface mb-2">
+            Acceso Restringido
           </h2>
-          <p className="text-xs font-body text-on-surface-variant mb-6">
-            Inicia sesión como administrador o ingresa el PIN maestro para acceder al editor de contenido y bandeja.
+          <p className="text-xs font-body text-on-surface-variant leading-relaxed mb-6">
+            Esta sección es exclusiva para el equipo administrador de Diversamente. Debes iniciar sesión con una cuenta autorizada para acceder a las herramientas de edición y bandejas de entrada.
           </p>
 
-          <form onSubmit={handlePinLogin} className="space-y-4">
-            <div>
-              <input
-                type="password"
-                placeholder="Ingresa tu clave de acceso o PIN"
-                value={pin}
-                onChange={(e) => setPin(e.target.value)}
-                className="w-full text-center px-4 py-3 text-sm bg-surface-container-low border border-border rounded-xl text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/40"
-              />
-              <p className="text-[11px] text-on-surface-variant/70 mt-1.5">
-                PIN de acceso rápido: <code className="text-primary font-mono font-bold">diversamente2024</code>
-              </p>
-            </div>
-            <button
-              type="submit"
-              className="w-full py-3 bg-primary text-on-primary font-label text-sm font-semibold rounded-xl hover:opacity-90 active:scale-95 transition-all shadow-sm"
-            >
-              Ingresar al Panel
-            </button>
-          </form>
-
-          <div className="mt-6 pt-6 border-t border-border">
-            <Link href="/login" className="text-xs font-label text-primary font-semibold hover:underline">
-              O inicia sesión con tu correo de administrador →
-            </Link>
-          </div>
+          <Link
+            href="/login?redirect=/admin"
+            className="w-full inline-flex items-center justify-center gap-2 py-3 bg-primary text-on-primary font-label text-sm font-semibold rounded-xl hover:opacity-90 active:scale-95 transition-all shadow-sm"
+          >
+            <ShieldCheck className="w-4 h-4" />
+            <span>Iniciar Sesión como Administrador</span>
+          </Link>
         </div>
       </div>
     );

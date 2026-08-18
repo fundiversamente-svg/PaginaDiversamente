@@ -37,7 +37,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Helper to fetch profile from Supabase with safe fallback
+  // Helper to fetch profile from Supabase
   const fetchProfile = useCallback(async (userId: string, userEmail?: string): Promise<Profile> => {
     const isSpecialAdmin = checkIsAdmin(userEmail);
     const defaultRole: UserRole = isSpecialAdmin ? 'admin' : 'subscriber';
@@ -67,14 +67,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           return data as unknown as Profile;
         }
 
-        // Si la tabla profiles aún no existe o el perfil no está creado, intentar crearlo
+        // Si el perfil no existe en public.profiles, crearlo en Supabase
         try {
-          await (supabase.from('profiles') as any).insert([fallbackProfile]);
-        } catch {
-          // Ignorar si la tabla no existe en la base de datos
+          const { data: created, error: upsertError } = await (supabase.from('profiles') as any)
+            .upsert([fallbackProfile])
+            .select()
+            .single();
+
+          if (!upsertError && created) {
+            return created as unknown as Profile;
+          }
+        } catch (insertErr) {
+          console.warn('[Profiles]: Error al insertar perfil:', insertErr);
         }
       } catch (err) {
-        console.warn('Profiles table not yet configured in Supabase, using local profile fallback.');
+        console.warn('Error al consultar profiles en Supabase:', err);
       }
     }
 
@@ -93,28 +100,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             setUser(session.user);
             const prof = await fetchProfile(session.user.id, session.user.email);
             if (isMounted) setProfile(prof);
-          } else {
-            // Check local fallback session
-            if (typeof window !== 'undefined') {
-              const savedMock = localStorage.getItem('diversamente_mock_user');
-              if (savedMock && isMounted) {
-                const parsed = JSON.parse(savedMock);
-                setUser(parsed.user);
-                setProfile(parsed.profile);
-              }
-            }
           }
         } catch (e) {
           console.error('Session get error:', e);
-        }
-      } else {
-        if (typeof window !== 'undefined') {
-          const savedMock = localStorage.getItem('diversamente_mock_user');
-          if (savedMock && isMounted) {
-            const parsed = JSON.parse(savedMock);
-            setUser(parsed.user);
-            setProfile(parsed.profile);
-          }
         }
       }
       if (isMounted) setIsLoading(false);
@@ -129,6 +117,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           setUser(session.user);
           const prof = await fetchProfile(session.user.id, session.user.email);
           setProfile(prof);
+        } else {
+          setUser(null);
+          setProfile(null);
         }
         setIsLoading(false);
       });
@@ -141,111 +132,50 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
   }, [fetchProfile]);
 
-  // Sign In
+  // Sign In - Autenticación estricta con Supabase
   const signIn = async (email: string, password: string): Promise<{ success: boolean; error?: string }> => {
     setIsLoading(true);
     const cleanEmail = email.trim().toLowerCase();
-    const isSpecialAdmin = checkIsAdmin(cleanEmail);
 
-    if (supabase && isSupabaseConfigured) {
-      try {
-        const { data, error } = await supabase.auth.signInWithPassword({
-          email: cleanEmail,
-          password,
-        });
+    if (!supabase || !isSupabaseConfigured) {
+      setIsLoading(false);
+      return { success: false, error: 'Supabase no está configurado en el servidor.' };
+    }
 
-        if (!error && data.user) {
-          setUser(data.user);
-          const prof = await fetchProfile(data.user.id, data.user.email);
-          setProfile(prof);
-          setIsLoading(false);
-          return { success: true };
-        }
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: cleanEmail,
+        password,
+      });
 
-        // Si es cuenta de prueba (demo) y no existe aún en Supabase Auth, registrarla automáticamente
-        if (cleanEmail.includes('diversamente.org') || cleanEmail.includes('demo') || cleanEmail === 'fundiversamente@gmail.com') {
-          const signUpRes = await supabase.auth.signUp({
-            email: cleanEmail,
-            password,
-            options: {
-              data: {
-                full_name: isSpecialAdmin ? 'Administrador Diversamente' : 'Familia Suscriptora',
-                role: isSpecialAdmin ? 'admin' : 'subscriber',
-              },
-            },
-          });
-
-          if (signUpRes.data.user) {
-            setUser(signUpRes.data.user);
-            const prof = await fetchProfile(signUpRes.data.user.id, cleanEmail);
-            setProfile(prof);
-            setIsLoading(false);
-            return { success: true };
-          }
-        }
-
-        // Si falla por credenciales inválidas o correo no registrado
-        if (error?.message?.toLowerCase().includes('invalid login credentials')) {
-          // Si es cuenta demo o fundiversamente, permitir inicio en modo simulación
-          if (cleanEmail.includes('admin') || cleanEmail.includes('familia') || isSpecialAdmin) {
-            return activateLocalMockSession(cleanEmail, isSpecialAdmin);
-          }
-          setIsLoading(false);
-          return {
-            success: false,
-            error: 'Correo o contraseña incorrectos. Si aún no tienes cuenta, ve a la pestaña "Registrarme Gratis".',
-          };
-        }
-
+      if (error) {
         setIsLoading(false);
-        return { success: false, error: error?.message || 'Error al iniciar sesión' };
-      } catch (err: any) {
-        console.warn('Supabase Auth error, using local fallback:', err);
-        return activateLocalMockSession(cleanEmail, isSpecialAdmin);
+        if (error.message.toLowerCase().includes('invalid login credentials')) {
+          return { success: false, error: 'Correo o contraseña incorrectos. Verifica tus datos.' };
+        }
+        if (error.message.toLowerCase().includes('email not confirmed')) {
+          return { success: false, error: 'Por favor confirma tu correo electrónico antes de ingresar.' };
+        }
+        return { success: false, error: error.message };
       }
-    }
 
-    // Modo simulación cuando no hay Supabase
-    return activateLocalMockSession(cleanEmail, isSpecialAdmin);
+      if (data.user) {
+        setUser(data.user);
+        const prof = await fetchProfile(data.user.id, data.user.email);
+        setProfile(prof);
+        setIsLoading(false);
+        return { success: true };
+      }
+
+      setIsLoading(false);
+      return { success: false, error: 'No se pudo iniciar sesión.' };
+    } catch (err: any) {
+      setIsLoading(false);
+      return { success: false, error: err.message || 'Error de conexión con Supabase.' };
+    }
   };
 
-  const activateLocalMockSession = (cleanEmail: string, isSpecialAdmin: boolean) => {
-    const mockId = `user-${Date.now()}`;
-    const mockUser = {
-      id: mockId,
-      email: cleanEmail,
-      app_metadata: {},
-      user_metadata: { full_name: isSpecialAdmin ? 'Administrador' : 'Suscriptor' },
-      aud: 'authenticated',
-      created_at: new Date().toISOString(),
-    } as unknown as User;
-
-    const mockProfile: Profile = {
-      id: mockId,
-      email: cleanEmail,
-      full_name: isSpecialAdmin ? 'Administrador Diversamente' : 'Familia Suscriptora',
-      avatar_url: null,
-      role: isSpecialAdmin ? 'admin' : 'subscriber',
-      membership_tier: isSpecialAdmin ? 'supporter' : 'free',
-      phone: null,
-      bio: null,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-    };
-
-    setUser(mockUser);
-    setProfile(mockProfile);
-    if (typeof window !== 'undefined') {
-      localStorage.setItem(
-        'diversamente_mock_user',
-        JSON.stringify({ user: mockUser, profile: mockProfile })
-      );
-    }
-    setIsLoading(false);
-    return { success: true };
-  };
-
-  // Sign Up
+  // Sign Up - Registro de nuevos usuarios en Supabase
   const signUp = async (
     email: string,
     password: string,
@@ -255,43 +185,40 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const cleanEmail = email.trim().toLowerCase();
     const isSpecialAdmin = checkIsAdmin(cleanEmail);
 
-    if (supabase && isSupabaseConfigured) {
-      try {
-        const { data, error } = await supabase.auth.signUp({
-          email: cleanEmail,
-          password,
-          options: {
-            data: {
-              full_name: fullName.trim(),
-              role: isSpecialAdmin ? 'admin' : 'subscriber',
-            },
-          },
-        });
-
-        if (error) {
-          setIsLoading(false);
-          return { success: false, error: error.message };
-        }
-
-        if (data.user) {
-          setUser(data.user);
-          const prof = await fetchProfile(data.user.id, data.user.email);
-          setProfile(prof);
-        } else {
-          // Si Supabase pide confirmación de correo pero queremos permitir acceso inmediato:
-          activateLocalMockSession(cleanEmail, isSpecialAdmin);
-        }
-
-        setIsLoading(false);
-        return { success: true };
-      } catch (err: any) {
-        console.warn('Supabase SignUp exception, using local fallback:', err);
-        return activateLocalMockSession(cleanEmail, isSpecialAdmin);
-      }
+    if (!supabase || !isSupabaseConfigured) {
+      setIsLoading(false);
+      return { success: false, error: 'Supabase no está configurado en el servidor.' };
     }
 
-    // Modo simulación
-    return activateLocalMockSession(cleanEmail, isSpecialAdmin);
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email: cleanEmail,
+        password,
+        options: {
+          data: {
+            full_name: fullName.trim(),
+            role: isSpecialAdmin ? 'admin' : 'subscriber',
+          },
+        },
+      });
+
+      if (error) {
+        setIsLoading(false);
+        return { success: false, error: error.message };
+      }
+
+      if (data.user) {
+        setUser(data.user);
+        const prof = await fetchProfile(data.user.id, data.user.email);
+        setProfile(prof);
+      }
+
+      setIsLoading(false);
+      return { success: true };
+    } catch (err: any) {
+      setIsLoading(false);
+      return { success: false, error: err.message || 'Error al registrar la cuenta.' };
+    }
   };
 
   // Sign Out
@@ -329,17 +256,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           .update(data)
           .eq('id', profile.id);
       } catch (e: any) {
-        console.warn('Error updating profile in Supabase:', e);
+        console.warn('Error actualizando perfil en Supabase:', e);
       }
     }
 
     setProfile(updated);
-    if (typeof window !== 'undefined') {
-      localStorage.setItem(
-        'diversamente_mock_user',
-        JSON.stringify({ user, profile: updated })
-      );
-    }
     return { success: true };
   };
 
