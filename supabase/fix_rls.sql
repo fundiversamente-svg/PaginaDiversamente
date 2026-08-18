@@ -1,18 +1,13 @@
 -- ==============================================================================
--- DIVERSAMENTE - ESQUEMA DE BASE DE DATOS SUPABASE & SISTEMA DE ROLES (RBAC)
--- Alianza de Inclusión Familiar: Amar, aceptar y avanzar juntos.
+-- DIVERSAMENTE - FIX COMPLETO AUTO-CONTENIDO (FUNCIONES + TABLAS + RLS + PERMISOS)
+-- Pega y ejecuta esto en el SQL Editor de tu proyecto Supabase:
+-- https://supabase.com/dashboard/project/pmpafbqxtyprxdermjss/sql
 -- ==============================================================================
 
--- 1. EXTENSIONES
+-- 1. EXTENSIÓN UUID
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
--- Otorgar permisos básicos de esquema a roles anónimos y autenticados
-GRANT USAGE ON SCHEMA public TO anon, authenticated, service_role;
-
--- ==============================================================================
--- 2. TABLA DE PERFILES DE USUARIO & ROLES
--- ==============================================================================
-
+-- 2. TABLA DE PERFILES
 CREATE TABLE IF NOT EXISTS public.profiles (
     id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
@@ -26,10 +21,7 @@ CREATE TABLE IF NOT EXISTS public.profiles (
     bio TEXT
 );
 
--- ==============================================================================
--- 3. FUNCIONES DE AYUDA DE SEGURIDAD PARA RLS (Sin recursión)
--- ==============================================================================
-
+-- 3. FUNCIONES DE SEGURIDAD (Definidas antes de las políticas para evitar error 42883)
 CREATE OR REPLACE FUNCTION public.is_admin()
 RETURNS BOOLEAN
 LANGUAGE sql
@@ -54,7 +46,7 @@ AS $$
   );
 $$;
 
--- Trigger automático para crear perfil cuando un usuario se registra en auth.users
+-- 4. TRIGGER PARA NUEVOS REGISTROS EN AUTH
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS TRIGGER
 LANGUAGE plpgsql
@@ -92,10 +84,7 @@ CREATE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
   FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
 
--- ==============================================================================
--- 4. CONTENIDO EXCLUSIVO PARA SUSCRIPTORES
--- ==============================================================================
-
+-- 5. CREACIÓN DE TODAS LAS TABLAS RESTANTES
 CREATE TABLE IF NOT EXISTS public.exclusive_content (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
@@ -111,10 +100,6 @@ CREATE TABLE IF NOT EXISTS public.exclusive_content (
     thumbnail_url TEXT,
     author VARCHAR(100) DEFAULT 'Equipo Diversamente'
 );
-
--- ==============================================================================
--- 5. CATÁLOGO DINÁMICO DE PROGRAMAS
--- ==============================================================================
 
 CREATE TABLE IF NOT EXISTS public.programs_catalog (
     id VARCHAR(100) PRIMARY KEY,
@@ -132,10 +117,6 @@ CREATE TABLE IF NOT EXISTS public.programs_catalog (
     is_active BOOLEAN DEFAULT true
 );
 
--- ==============================================================================
--- 6. RECURSOS PÚBLICOS
--- ==============================================================================
-
 CREATE TABLE IF NOT EXISTS public.resources (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
@@ -148,10 +129,6 @@ CREATE TABLE IF NOT EXISTS public.resources (
     download_count INTEGER DEFAULT 0,
     is_featured BOOLEAN DEFAULT false
 );
-
--- ==============================================================================
--- 7. TABLAS DE FORMULARIOS Y BANDEJA
--- ==============================================================================
 
 CREATE TABLE IF NOT EXISTS public.contact_messages (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -215,18 +192,13 @@ CREATE TABLE IF NOT EXISTS public.newsletter_subscribers (
     is_active BOOLEAN DEFAULT true
 );
 
--- ==============================================================================
--- 8. PERMISOS DE TABLA (GRANTS)
--- ==============================================================================
-
+-- 6. PERMISOS GLOBALES (GRANTS)
+GRANT USAGE ON SCHEMA public TO anon, authenticated, service_role;
 GRANT ALL ON ALL TABLES IN SCHEMA public TO anon, authenticated, service_role;
 GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO anon, authenticated, service_role;
 GRANT ALL ON ALL ROUTINES IN SCHEMA public TO anon, authenticated, service_role;
 
--- ==============================================================================
--- 9. POLÍTICAS ROW LEVEL SECURITY (RLS) IDEMPOTENTES
--- ==============================================================================
-
+-- 7. HABILITAR ROW LEVEL SECURITY (RLS)
 ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.exclusive_content ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.programs_catalog ENABLE ROW LEVEL SECURITY;
@@ -237,7 +209,9 @@ ALTER TABLE public.volunteers ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.donations ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.newsletter_subscribers ENABLE ROW LEVEL SECURITY;
 
--- 9.1 Políticas para PROFILES
+-- 8. POLÍTICAS RLS IDEMPOTENTES (DROP IF EXISTS + CREATE)
+
+-- 8.1 PROFILES
 DROP POLICY IF EXISTS "Lectura de propio perfil o administradores" ON public.profiles;
 CREATE POLICY "Lectura de propio perfil o administradores"
     ON public.profiles FOR SELECT
@@ -257,7 +231,7 @@ CREATE POLICY "Insertar propio perfil"
     TO authenticated, anon, service_role
     WITH CHECK (true);
 
--- 9.2 Políticas para CONTENIDO EXCLUSIVO
+-- 8.2 CONTENIDO EXCLUSIVO
 DROP POLICY IF EXISTS "Lectura contenido exclusivo para suscriptores y administradores" ON public.exclusive_content;
 CREATE POLICY "Lectura contenido exclusivo para suscriptores y administradores"
     ON public.exclusive_content FOR SELECT
@@ -283,7 +257,7 @@ CREATE POLICY "Administradores pueden eliminar contenido exclusivo"
     TO authenticated
     USING (public.is_admin());
 
--- 9.3 Políticas para PROGRAMAS (Edición Admin, Lectura Pública)
+-- 8.3 PROGRAMAS
 DROP POLICY IF EXISTS "Lectura publica de programas activos" ON public.programs_catalog;
 CREATE POLICY "Lectura publica de programas activos"
     ON public.programs_catalog FOR SELECT
@@ -309,7 +283,7 @@ CREATE POLICY "Administradores pueden borrar programas"
     TO authenticated
     USING (public.is_admin());
 
--- 9.4 Políticas para RECURSOS PÚBLICOS
+-- 8.4 RECURSOS PÚBLICOS
 DROP POLICY IF EXISTS "Lectura publica de recursos" ON public.resources;
 CREATE POLICY "Lectura publica de recursos"
     ON public.resources FOR SELECT
@@ -335,7 +309,7 @@ CREATE POLICY "Administradores pueden eliminar recursos"
     TO authenticated
     USING (public.is_admin());
 
--- 9.5 Políticas para FORMULARIOS (Insert público para anon y authenticated)
+-- 8.5 FORMULARIOS PÚBLICOS (INSERT ABIERTO PARA VISITANTES)
 DROP POLICY IF EXISTS "Permitir envio publico de mensajes" ON public.contact_messages;
 CREATE POLICY "Permitir envio publico de mensajes"
     ON public.contact_messages FOR INSERT
@@ -402,10 +376,7 @@ CREATE POLICY "Solo admin puede ver lista de newsletter"
     TO authenticated
     USING (public.is_admin());
 
--- ==============================================================================
--- 10. DATOS SEMILLA INICIALES
--- ==============================================================================
-
+-- 9. CONTENIDO SEMILLA INICIAL
 INSERT INTO public.exclusive_content (title, description, type, video_url, download_url, file_size, author, thumbnail_url)
 VALUES
 (
@@ -462,7 +433,8 @@ VALUES
 )
 ON CONFLICT DO NOTHING;
 
--- 11. ASIGNAR ROL ADMINISTRADOR PERMANENTE A FUNDIVERSAMENTE
+-- 10. ASIGNAR ROL ADMINISTRADOR PERMANENTE A FUNDIVERSAMENTE
 UPDATE public.profiles
 SET role = 'admin', membership_tier = 'supporter', full_name = 'Administrador Diversamente'
 WHERE email = 'fundiversamente@gmail.com';
+

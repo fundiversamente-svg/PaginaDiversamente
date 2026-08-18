@@ -6,9 +6,144 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[];
 
+export type UserRole = 'visitor' | 'subscriber' | 'admin';
+export type MembershipTier = 'free' | 'supporter' | 'scholarship';
+
 export interface Database {
   public: {
     Tables: {
+      profiles: {
+        Row: {
+          id: string;
+          created_at: string;
+          updated_at: string;
+          email: string;
+          full_name: string | null;
+          avatar_url: string | null;
+          role: UserRole;
+          membership_tier: MembershipTier;
+          phone: string | null;
+          bio: string | null;
+        };
+        Insert: {
+          id: string;
+          created_at?: string;
+          updated_at?: string;
+          email: string;
+          full_name?: string | null;
+          avatar_url?: string | null;
+          role?: UserRole;
+          membership_tier?: MembershipTier;
+          phone?: string | null;
+          bio?: string | null;
+        };
+        Update: {
+          id?: string;
+          created_at?: string;
+          updated_at?: string;
+          email?: string;
+          full_name?: string | null;
+          avatar_url?: string | null;
+          role?: UserRole;
+          membership_tier?: MembershipTier;
+          phone?: string | null;
+          bio?: string | null;
+        };
+      };
+      exclusive_content: {
+        Row: {
+          id: string;
+          created_at: string;
+          updated_at: string;
+          title: string;
+          description: string;
+          type: 'webinar' | 'plantilla' | 'guia_avanzada' | 'evento_privado' | 'kit_sensorial';
+          video_url: string | null;
+          download_url: string | null;
+          file_size: string | null;
+          access_tier: 'subscriber' | 'admin';
+          is_published: boolean;
+          thumbnail_url: string | null;
+          author: string;
+        };
+        Insert: {
+          id?: string;
+          created_at?: string;
+          updated_at?: string;
+          title: string;
+          description: string;
+          type: 'webinar' | 'plantilla' | 'guia_avanzada' | 'evento_privado' | 'kit_sensorial';
+          video_url?: string | null;
+          download_url?: string | null;
+          file_size?: string | null;
+          access_tier?: 'subscriber' | 'admin';
+          is_published?: boolean;
+          thumbnail_url?: string | null;
+          author?: string;
+        };
+        Update: {
+          id?: string;
+          created_at?: string;
+          updated_at?: string;
+          title?: string;
+          description?: string;
+          type?: 'webinar' | 'plantilla' | 'guia_avanzada' | 'evento_privado' | 'kit_sensorial';
+          video_url?: string | null;
+          download_url?: string | null;
+          file_size?: string | null;
+          access_tier?: 'subscriber' | 'admin';
+          is_published?: boolean;
+          thumbnail_url?: string | null;
+          author?: string;
+        };
+      };
+      programs_catalog: {
+        Row: {
+          id: string;
+          created_at: string;
+          title: string;
+          category: string;
+          short_description: string;
+          full_description: string | null;
+          icon: string;
+          image_url: string | null;
+          target_audience: string | null;
+          format: string;
+          duration: string | null;
+          features: string[];
+          is_active: boolean;
+        };
+        Insert: {
+          id: string;
+          created_at?: string;
+          title: string;
+          category: string;
+          short_description: string;
+          full_description?: string | null;
+          icon?: string;
+          image_url?: string | null;
+          target_audience?: string | null;
+          format?: string;
+          duration?: string | null;
+          features?: string[];
+          is_active?: boolean;
+        };
+        Update: {
+          id?: string;
+          created_at?: string;
+          title?: string;
+          category?: string;
+          short_description?: string;
+          full_description?: string | null;
+          icon?: string;
+          image_url?: string | null;
+          target_audience?: string | null;
+          format?: string;
+          duration?: string | null;
+          features?: string[];
+          is_active?: boolean;
+        };
+      };
       contact_messages: {
         Row: {
           id: string;

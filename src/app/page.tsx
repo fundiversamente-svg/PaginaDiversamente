@@ -104,6 +104,7 @@ export default function HomePage() {
                       src="https://lh3.googleusercontent.com/aida-public/AB6AXuDBcZuIis-sb9UIOfFY3ZCUTe2_xqa3yn-AOE_VVPTxCRmssXFXc0kBwm5ATanxOrytO7jfE3B6beGoHPvzsDCsuE1q093eYYO9v0mEPivvR1C8DUE3Fz940DfSLH_YUXIRDZQxcYt39FwaRpg9xHYBzAwp46Jw4xv4Y2lTtFkjmP8Og_apWf8b0u_FdPkcvCl7AmqHd3gipVEVKCesi33jVrXPaIiRpeRt1z16qoO6DQ2yQM925VLk0Jzo5uEoYChcYd4"
                       alt="Diversamente Logo Oficial"
                       fill
+                      sizes="(max-width: 768px) 192px, 224px"
                       className="object-contain drop-shadow-md"
                       priority
                     />
@@ -143,6 +144,7 @@ export default function HomePage() {
               src="https://lh3.googleusercontent.com/aida-public/AB6AXuCNkiVivC-BJEDIS5_LebPoMUechKRKR-VdLpBhvMMdIxblT7FySy7zG1Bohmmjs-23jnIgzdVC_JonaRl9ukLVfJya_Qm2FUnX2esA-KbgktEmWubOt6XmTGf5CZ5u6yuNyN4tJVH0zuwLRkp9GLisu-u6JN0e3qtKR1lFlRjbWaquPikTbNceYWttGr1WXrAOARjXShLCLUHq2bZJsVUWYCkk7V5CSiPzpr9ktpYMkU5RCNWiY8mxKg"
               alt="Video de presentación Diversamente"
               fill
+              sizes="(max-width: 1024px) 100vw, 768px"
               className="object-cover group-hover:scale-105 transition-transform duration-700 opacity-90"
             />
             <div className="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors flex items-center justify-center">
@@ -208,6 +210,7 @@ export default function HomePage() {
               src={featuredPrograms[0].image}
               alt={featuredPrograms[0].title}
               fill
+              sizes="(max-width: 1024px) 100vw, 66vw"
               className="object-cover group-hover:scale-105 transition-transform duration-700 opacity-75"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-surface via-surface/60 to-transparent" />
@@ -332,6 +335,7 @@ export default function HomePage() {
                   src={TESTIMONIALS[0].avatar}
                   alt={TESTIMONIALS[0].author}
                   fill
+                  sizes="56px"
                   className="object-cover"
                 />
               </div>

@@ -39,6 +39,7 @@ export default function SobreNosotrosPage() {
                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuCNkiVivC-BJEDIS5_LebPoMUechKRKR-VdLpBhvMMdIxblT7FySy7zG1Bohmmjs-23jnIgzdVC_JonaRl9ukLVfJya_Qm2FUnX2esA-KbgktEmWubOt6XmTGf5CZ5u6yuNyN4tJVH0zuwLRkp9GLisu-u6JN0e3qtKR1lFlRjbWaquPikTbNceYWttGr1WXrAOARjXShLCLUHq2bZJsVUWYCkk7V5CSiPzpr9ktpYMkU5RCNWiY8mxKg"
                 alt="Familia en Diversamente"
                 fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
                 className="object-cover"
                 priority
               />
@@ -79,6 +80,7 @@ export default function SobreNosotrosPage() {
               src="https://lh3.googleusercontent.com/aida-public/AB6AXuDUdC3OPaLg_8XvkdMGSBWFOphB8nqaTq6FNB_WXA9oQX3jlWpIMpVm4Exf_x0mBNCX7MvCmXepBVoNkD6HMm7d7zGsiK5JIHNw2-wJNMZ3Wt7akpVH2eZOdRc-pQbcmIKqLlnesyuBYbKZ61E3XtJ9zpNU2F2w6ddLTsRzyjtdl0mV2cZLofBL0_wRSmhSUXYxLKmKsTuIpYpUWlDfI99yZDflmU1z14obOibTd-uqtcPJKsMas8NBfw"
               alt="Planta brotando en tierra fértil - Crecimiento Nutrido"
               fill
+              sizes="(max-width: 768px) 100vw, 33vw"
               className="object-cover"
             />
           </div>
@@ -127,6 +129,7 @@ export default function SobreNosotrosPage() {
                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuBIN9Xm_IrpRNizzY9AwYi34cFfWRRVeUMGOeJZgfIikLeb216rEs1dSTz4dSMfb6pwvoVjbHN6gFG0j_oizU7Ll_xbOFzqoosBhCXLk7xdVOQl5VtMyjkrHv0vc8n3pb3NeQhDGaTZA3l3vDG_lgW-yKZHjF1leNSk6W1cohsQbf9YChg3MVWJ_UVGyRkj25bu-BOy567DaRg78i70gB4ncKYL_UgS2MSJV2xS-aijMKQXK6QUoXYClOFKKJ0r6sKYxjg"
                 alt="Aceptación Logo Diversamente"
                 fill
+                sizes="112px"
                 className="object-contain"
               />
             </div>
@@ -166,6 +169,7 @@ export default function SobreNosotrosPage() {
                   src={member.image}
                   alt={member.name}
                   fill
+                  sizes="160px"
                   className="object-cover"
                 />
               </div>
