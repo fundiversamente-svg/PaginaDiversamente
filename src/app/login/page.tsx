@@ -48,11 +48,8 @@ function LoginForm() {
 
     if (res.success) {
       showToast('¡Inicio de sesión exitoso!', 'success');
-      if (email.toLowerCase().includes('admin') || email.toLowerCase().includes('fundiversamente') || role === 'admin') {
-        router.push('/admin');
-      } else {
-        router.push(redirectPath || '/suscriptores');
-      }
+      const isAdm = email.toLowerCase().includes('admin') || email.toLowerCase().includes('fundiversamente') || role === 'admin';
+      window.location.href = redirectPath || (isAdm ? '/admin' : '/suscriptores');
     } else {
       showToast(res.error || 'Correo o contraseña incorrectos.', 'error');
     }

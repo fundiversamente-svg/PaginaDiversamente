@@ -31,12 +31,11 @@ import {
   Check,
 } from 'lucide-react';
 import { supabase, isSupabaseConfigured, safeInsert } from '@/lib/supabaseClient';
-import { useAuth } from '@/context/AuthContext';
+import { useAuth, checkIsAdmin } from '@/context/AuthContext';
 import { useToast } from '@/components/Toast';
 
 export default function AdminPortalPage() {
-  const { user, profile, role, signOut } = useAuth();
-  const [pin, setPin] = useState('');
+  const { user, profile, role, isLoading, signOut } = useAuth();
   const [activeMainTab, setActiveMainTab] = useState<'content' | 'inbox' | 'users'>('content');
   const [activeSubTab, setActiveSubTab] = useState<string>('exclusive');
   const [loading, setLoading] = useState(false);
@@ -74,7 +73,7 @@ export default function AdminPortalPage() {
   const [confirmPassword, setConfirmPassword] = useState('');
 
   const { showToast } = useToast();
-  const isAdmin = role === 'admin';
+  const isAdmin = role === 'admin' || Boolean(user?.email && checkIsAdmin(user.email));
 
   const loadFromLocal = useCallback((tableName: string) => {
     if (typeof window !== 'undefined') {
@@ -391,6 +390,19 @@ export default function AdminPortalPage() {
     link.click();
     showToast('Archivo CSV exportado exitosamente', 'success');
   };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-[75vh] flex items-center justify-center px-4 py-12">
+        <div className="flex flex-col items-center gap-3 text-on-surface-variant">
+          <RefreshCw className="w-8 h-8 animate-spin text-primary" />
+          <p className="text-xs font-label uppercase tracking-wider font-semibold">
+            Verificando permisos de acceso...
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   if (!isAdmin) {
     return (
