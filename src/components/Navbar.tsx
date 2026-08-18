@@ -12,13 +12,12 @@ import {
   LogOut,
   ShieldCheck,
   UserCheck,
-  Lock,
-  Layers,
   Home,
   Info,
   BookOpen,
   FolderHeart,
   MessageCircle,
+  ChevronDown,
 } from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
 import { useAuth, checkIsAdmin } from '@/context/AuthContext';
@@ -34,7 +33,7 @@ export default function Navbar() {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 20) {
+      if (window.scrollY > 15) {
         setIsScrolled(true);
       } else {
         setIsScrolled(false);
@@ -44,7 +43,7 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Lock body scroll when mobile menu is open to prevent page movement behind it
+  // Lock body scroll when mobile drawer is active
   useEffect(() => {
     if (mobileMenuOpen) {
       document.body.style.overflow = 'hidden';
@@ -75,168 +74,177 @@ export default function Navbar() {
       <header
         className={`fixed top-0 left-0 right-0 w-full z-40 transition-all duration-300 ${
           isScrolled
-            ? 'bg-surface/95 dark:bg-surface-dim/95 backdrop-blur-md shadow-ambient-1 py-3 border-b border-border/40'
-            : 'bg-surface/90 dark:bg-surface-dim/90 backdrop-blur-sm sm:bg-transparent py-3 sm:py-5 border-b border-border/20 sm:border-transparent'
+            ? 'bg-surface/95 dark:bg-surface-dim/95 backdrop-blur-md shadow-ambient-1 py-2.5 border-b border-border/50'
+            : 'bg-surface/85 dark:bg-surface-dim/85 backdrop-blur-sm sm:bg-transparent py-3 sm:py-4 border-b border-border/20 sm:border-transparent'
         }`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-          {/* Brand / Logo */}
-          <Link
-            href="/"
-            className="group flex items-center gap-2 text-xl sm:text-2xl font-headline font-semibold text-primary tracking-tight transition-transform duration-300 hover:scale-[1.02]"
-          >
-            <div className="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container flex-shrink-0">
-              <Sparkles className="w-4 h-4 text-secondary" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between gap-4 h-12 sm:h-14">
+            
+            {/* 1. BRAND / LOGO (Left Column) */}
+            <div className="flex items-center flex-shrink-0">
+              <Link
+                href="/"
+                className="group flex items-center gap-2.5 text-xl sm:text-2xl font-headline font-bold text-primary tracking-tight transition-transform duration-200 hover:scale-[1.02]"
+              >
+                <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container flex-shrink-0 shadow-xs">
+                  <Sparkles className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-secondary" />
+                </div>
+                <span className="font-headline font-bold text-on-surface">Diversamente</span>
+              </Link>
             </div>
-            <span className="truncate font-headline font-bold">Diversamente</span>
-          </Link>
 
-          {/* Desktop Navigation Links (>= 1024px) */}
-          <nav className="hidden lg:flex items-center gap-6">
-            {navLinks.map((link) => {
-              const isActive = pathname === link.href;
-              return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={`text-sm font-label font-medium transition-all duration-200 relative py-1 flex items-center gap-1.5 ${
-                    isActive
-                      ? 'text-primary font-bold'
-                      : 'text-on-surface-variant hover:text-primary'
-                  }`}
-                >
-                  <span>{link.name}</span>
-                  {link.badge && (
-                    <span className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded-full bg-primary-container text-on-primary-container">
-                      {link.badge}
-                    </span>
-                  )}
-                  {isActive && (
-                    <span className="absolute bottom-0 left-0 w-full h-[2px] bg-primary rounded-full animate-fadeIn" />
-                  )}
-                </Link>
-              );
-            })}
-
-            {/* Dedicated visible Admin Link in Navbar when logged in as admin */}
-            {isAdministrator && (
-              <Link
-                href="/admin"
-                className={`text-xs font-label font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-full border transition-all flex items-center gap-1.5 ${
-                  pathname === '/admin'
-                    ? 'bg-primary text-on-primary border-primary shadow-sm'
-                    : 'bg-primary/10 text-primary border-primary/30 hover:bg-primary/20'
-                }`}
-              >
-                <ShieldCheck className="w-3.5 h-3.5" />
-                <span>Panel Admin</span>
-              </Link>
-            )}
-          </nav>
-
-          {/* Desktop Actions (>= 1024px) */}
-          <div className="hidden lg:flex items-center gap-3">
-            <ThemeToggle />
-
-            {/* User Auth Section */}
-            {user ? (
-              <div className="relative">
-                <button
-                  onClick={() => setUserMenuOpen(!userMenuOpen)}
-                  className="flex items-center gap-2 p-1.5 pr-3 rounded-full bg-surface-container-low hover:bg-surface-container-high border border-border transition-all"
-                >
-                  <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold font-mono ${
-                    isAdministrator ? 'bg-primary text-on-primary' : 'bg-secondary text-on-secondary'
-                  }`}>
-                    {profile?.full_name ? profile.full_name.charAt(0).toUpperCase() : user.email?.charAt(0).toUpperCase()}
-                  </div>
-                  <span className="text-xs font-label font-semibold text-on-surface max-w-[100px] truncate">
-                    {profile?.full_name || user.email?.split('@')[0]}
-                  </span>
-                </button>
-
-                {/* User Dropdown */}
-                {userMenuOpen && (
-                  <div className="absolute right-0 mt-2 w-56 bg-surface rounded-2xl p-2 border border-border shadow-ambient-2 z-50 animate-fadeIn font-body text-xs">
-                    <div className="px-3 py-2 border-b border-border/50">
-                      <p className="font-semibold text-on-surface truncate">{profile?.full_name || 'Mi Cuenta'}</p>
-                      <p className="text-[11px] text-on-surface-variant truncate">{user.email}</p>
-                      <span className={`inline-flex items-center gap-1 mt-1 px-2 py-0.5 rounded text-[10px] font-bold ${
-                        isAdministrator ? 'bg-primary-container text-on-primary-container' : 'bg-secondary-container text-on-secondary-container'
-                      }`}>
-                        {isAdministrator ? <ShieldCheck className="w-3 h-3 text-primary" /> : <UserCheck className="w-3 h-3 text-secondary" />}
-                        <span>{isAdministrator ? 'Administrador' : 'Suscriptor Activo'}</span>
-                      </span>
-                    </div>
-
-                    <div className="py-1">
-                      {isAdministrator && (
-                        <Link
-                          href="/admin"
-                          className="flex items-center gap-2 px-3 py-2 rounded-xl text-primary font-bold bg-primary/10 hover:bg-primary/20 transition-colors mb-1"
-                        >
-                          <ShieldCheck className="w-4 h-4" />
-                          <span>Panel de Administración</span>
-                        </Link>
+            {/* 2. FLOATING CENTER NAVIGATION PILL (Desktop >= 1024px) */}
+            <nav className="hidden lg:flex items-center justify-center flex-1 max-w-2xl mx-auto">
+              <div className="flex items-center gap-1 bg-surface-container-low/90 dark:bg-surface-container-high/50 backdrop-blur-md px-2 py-1 rounded-full border border-border/60 shadow-xs">
+                {navLinks.map((link) => {
+                  const isActive = pathname === link.href;
+                  return (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      className={`text-xs xl:text-sm font-label font-medium px-3 xl:px-4 py-1.5 rounded-full transition-all duration-200 flex items-center gap-1.5 relative whitespace-nowrap ${
+                        isActive
+                          ? 'bg-surface dark:bg-surface-container-highest text-primary font-bold shadow-xs'
+                          : 'text-on-surface-variant hover:text-primary hover:bg-surface/50 dark:hover:bg-surface-container-high'
+                      }`}
+                    >
+                      <span>{link.name}</span>
+                      {link.badge && (
+                        <span className="text-[9px] uppercase font-bold tracking-wider px-1.5 py-0.2 rounded-full bg-primary text-on-primary">
+                          {link.badge}
+                        </span>
                       )}
-
-                      <Link
-                        href="/suscriptores"
-                        className="flex items-center gap-2 px-3 py-2 rounded-xl text-on-surface hover:bg-surface-container-low hover:text-primary transition-colors"
-                      >
-                        <Sparkles className="w-3.5 h-3.5 text-secondary" />
-                        <span>Contenido Exclusivo</span>
-                      </Link>
-                    </div>
-
-                    <div className="pt-1 border-t border-border/50">
-                      <button
-                        onClick={() => signOut()}
-                        className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors text-left"
-                      >
-                        <LogOut className="w-3.5 h-3.5" />
-                        <span>Cerrar Sesión</span>
-                      </button>
-                    </div>
-                  </div>
-                )}
+                    </Link>
+                  );
+                })}
               </div>
-            ) : (
+            </nav>
+
+            {/* 3. RIGHT ACTION CONTROLS (Desktop >= 1024px) */}
+            <div className="hidden lg:flex items-center justify-end gap-2.5 flex-shrink-0">
+              {/* Admin direct pill if logged in as administrator */}
+              {isAdministrator && (
+                <Link
+                  href="/admin"
+                  className={`inline-flex items-center gap-1.5 text-xs font-label font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-full border transition-all ${
+                    pathname === '/admin'
+                      ? 'bg-primary text-on-primary border-primary shadow-xs'
+                      : 'bg-primary/10 text-primary border-primary/30 hover:bg-primary/20'
+                  }`}
+                  title="Acceso al Panel de Administración"
+                >
+                  <ShieldCheck className="w-3.5 h-3.5" />
+                  <span>Admin</span>
+                </Link>
+              )}
+
+              {/* Theme Toggle */}
+              <ThemeToggle />
+
+              {/* User Account / Login Button */}
+              {user ? (
+                <div className="relative">
+                  <button
+                    onClick={() => setUserMenuOpen(!userMenuOpen)}
+                    className="inline-flex items-center gap-2 p-1 pl-1.5 pr-3 rounded-full bg-surface-container-low hover:bg-surface-container-high border border-border transition-all"
+                    aria-label="Menú de usuario"
+                  >
+                    <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold font-mono text-white ${
+                      isAdministrator ? 'bg-primary' : 'bg-secondary'
+                    }`}>
+                      {profile?.full_name ? profile.full_name.charAt(0).toUpperCase() : user.email?.charAt(0).toUpperCase()}
+                    </div>
+                    <span className="text-xs font-label font-semibold text-on-surface max-w-[100px] truncate">
+                      {profile?.full_name || user.email?.split('@')[0]}
+                    </span>
+                    <ChevronDown className="w-3 h-3 text-on-surface-variant opacity-70" />
+                  </button>
+
+                  {/* User Dropdown */}
+                  {userMenuOpen && (
+                    <div className="absolute right-0 mt-2 w-60 bg-surface rounded-2xl p-2 border border-border shadow-ambient-2 z-50 animate-fadeIn font-body text-xs">
+                      <div className="px-3.5 py-2.5 border-b border-border/50">
+                        <p className="font-semibold text-on-surface truncate">{profile?.full_name || 'Mi Cuenta'}</p>
+                        <p className="text-[11px] text-on-surface-variant truncate opacity-80">{user.email}</p>
+                        <span className={`inline-flex items-center gap-1 mt-1.5 px-2 py-0.5 rounded text-[10px] font-bold ${
+                          isAdministrator ? 'bg-primary-container text-on-primary-container' : 'bg-secondary-container text-on-secondary-container'
+                        }`}>
+                          {isAdministrator ? <ShieldCheck className="w-3 h-3 text-primary" /> : <UserCheck className="w-3 h-3 text-secondary" />}
+                          <span>{isAdministrator ? 'Super Administrador' : 'Suscriptor Activo'}</span>
+                        </span>
+                      </div>
+
+                      <div className="py-1.5">
+                        {isAdministrator && (
+                          <Link
+                            href="/admin"
+                            className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-primary font-bold bg-primary/10 hover:bg-primary/20 transition-colors mb-1"
+                          >
+                            <ShieldCheck className="w-4 h-4" />
+                            <span>Panel de Administración</span>
+                          </Link>
+                        )}
+
+                        <Link
+                          href="/suscriptores"
+                          className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-on-surface hover:bg-surface-container-low hover:text-primary transition-colors"
+                        >
+                          <Sparkles className="w-4 h-4 text-secondary" />
+                          <span>Contenido Exclusivo</span>
+                        </Link>
+                      </div>
+
+                      <div className="pt-1.5 border-t border-border/50">
+                        <button
+                          onClick={() => signOut()}
+                          className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors text-left font-medium"
+                        >
+                          <LogOut className="w-3.5 h-3.5" />
+                          <span>Cerrar Sesión</span>
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <Link
+                  href="/login"
+                  className="inline-flex items-center gap-1.5 text-xs font-label font-semibold px-3.5 py-2 rounded-xl text-on-surface-variant hover:text-primary hover:bg-surface-container-low border border-border transition-all"
+                >
+                  <User className="w-3.5 h-3.5" />
+                  <span>Ingresar</span>
+                </Link>
+              )}
+
+              {/* Primary Call to Action: Donar */}
               <Link
-                href="/login"
-                className="inline-flex items-center gap-1.5 text-xs font-label font-semibold px-3.5 py-2 rounded-xl text-on-surface-variant hover:text-primary hover:bg-surface-container-low border border-border transition-all"
+                href="/donar"
+                className="inline-flex items-center gap-1.5 bg-primary text-on-primary font-label text-xs sm:text-sm font-semibold px-4 py-2 rounded-xl shadow-xs hover:opacity-95 hover:scale-[1.02] active:scale-[0.98] transition-all"
               >
-                <User className="w-3.5 h-3.5" />
-                <span>Ingresar</span>
+                <Heart className="w-3.5 h-3.5 fill-current opacity-90" />
+                <span>Donar</span>
               </Link>
-            )}
+            </div>
 
-            {/* Donate Button */}
-            <Link
-              href="/donar"
-              className="inline-flex items-center gap-2 bg-primary text-on-primary font-label text-sm font-semibold px-4 py-2 rounded-xl shadow-sm hover:opacity-95 hover:scale-[1.03] active:scale-[0.98] transition-all duration-300"
-            >
-              <Heart className="w-4 h-4 fill-current opacity-80" />
-              <span>Donar</span>
-            </Link>
-          </div>
+            {/* 4. MOBILE HAMBURGER CONTROLS (< 1024px) */}
+            <div className="flex lg:hidden items-center gap-2">
+              <ThemeToggle />
+              <button
+                type="button"
+                onClick={() => setMobileMenuOpen(true)}
+                className="p-2 sm:p-2.5 rounded-xl text-primary bg-surface-container-low hover:bg-surface-container-high border border-border focus:outline-none transition-colors"
+                aria-label="Abrir menú"
+              >
+                <Menu className="w-5 h-5 sm:w-6 sm:h-6" />
+              </button>
+            </div>
 
-          {/* Mobile hamburger controls (< 1024px) */}
-          <div className="flex lg:hidden items-center gap-2">
-            <ThemeToggle />
-            <button
-              type="button"
-              onClick={() => setMobileMenuOpen(true)}
-              className="p-2 rounded-xl text-primary bg-surface-container-low hover:bg-surface-container-high border border-border focus:outline-none transition-colors"
-              aria-label="Abrir menú de navegación"
-            >
-              <Menu className="w-6 h-6" />
-            </button>
           </div>
         </div>
       </header>
 
-      {/* Modern Mobile Slide-Over Drawer with Dark Backdrop */}
+      {/* 5. SLIDE-OVER MOBILE DRAWER WITH BACKDROP */}
       {mobileMenuOpen && (
         <div className="fixed inset-0 z-50 lg:hidden animate-fadeIn" role="dialog" aria-modal="true">
           {/* Dark Backdrop */}
@@ -247,10 +255,10 @@ export default function Navbar() {
 
           {/* Drawer Panel */}
           <div className="fixed inset-y-0 right-0 w-full max-w-xs sm:max-w-sm bg-surface shadow-2xl border-l border-border flex flex-col justify-between overflow-y-auto p-6 animate-slideInRight z-50">
-            {/* Top drawer header */}
+            {/* Drawer Header */}
             <div>
               <div className="flex items-center justify-between pb-5 border-b border-border">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2.5">
                   <div className="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container">
                     <Sparkles className="w-4 h-4 text-secondary" />
                   </div>
@@ -262,7 +270,7 @@ export default function Navbar() {
                   className="p-2 rounded-full text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors"
                   aria-label="Cerrar menú"
                 >
-                  <X className="w-6 h-6" />
+                  <X className="w-5 h-5" />
                 </button>
               </div>
 
@@ -280,7 +288,7 @@ export default function Navbar() {
                 </div>
               )}
 
-              {/* Navigation links */}
+              {/* Navigation Links */}
               <nav className="flex flex-col gap-1.5 mt-4">
                 {navLinks.map((link) => {
                   const isActive = pathname === link.href;
@@ -311,7 +319,7 @@ export default function Navbar() {
               </nav>
             </div>
 
-            {/* Bottom Drawer Footer: User status & CTA */}
+            {/* Drawer Footer */}
             <div className="pt-6 border-t border-border flex flex-col gap-3 mt-6">
               {user ? (
                 <div className="flex flex-col gap-2">
@@ -321,7 +329,7 @@ export default function Navbar() {
                     <span className={`inline-block mt-1.5 px-2 py-0.5 rounded text-[10px] font-bold ${
                       isAdministrator ? 'bg-primary-container text-on-primary-container' : 'bg-secondary-container text-on-secondary-container'
                     }`}>
-                      {isAdministrator ? 'Administrador' : 'Suscriptor Activo'}
+                      {isAdministrator ? 'Super Administrador' : 'Suscriptor Activo'}
                     </span>
                   </div>
 
