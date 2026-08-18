@@ -27,8 +27,11 @@ import {
   Save,
   UserPlus,
   KeyRound,
-  ShieldAlert,
+  Send,
+  Copy,
   Check,
+  Radio,
+  FileText,
 } from 'lucide-react';
 import { supabase, isSupabaseConfigured, safeInsert } from '@/lib/supabaseClient';
 import { useAuth, checkIsAdmin } from '@/context/AuthContext';
@@ -36,7 +39,7 @@ import { useToast } from '@/components/Toast';
 
 export default function AdminPortalPage() {
   const { user, profile, role, isLoading, signOut } = useAuth();
-  const [activeMainTab, setActiveMainTab] = useState<'content' | 'inbox' | 'users'>('content');
+  const [activeMainTab, setActiveMainTab] = useState<'content' | 'inbox' | 'users' | 'newsletters'>('content');
   const [activeSubTab, setActiveSubTab] = useState<string>('exclusive');
   const [loading, setLoading] = useState(false);
   const [dataList, setDataList] = useState<any[]>([]);
@@ -47,6 +50,7 @@ export default function AdminPortalPage() {
   const [modalMode, setModalMode] = useState<'create' | 'edit'>('create');
   const [isAddAdminModalOpen, setIsAddAdminModalOpen] = useState(false);
   const [isChangePasswordModalOpen, setIsChangePasswordModalOpen] = useState(false);
+  const [isNewsletterModalOpen, setIsNewsletterModalOpen] = useState(false);
 
   // Form state for content creation
   const [formData, setFormData] = useState({
@@ -67,6 +71,14 @@ export default function AdminPortalPage() {
     email: '',
     password: '',
   });
+
+  // Form state for newsletter broadcast
+  const [newsletterData, setNewsletterData] = useState({
+    subject: '',
+    content: '',
+    audience: 'all' as 'all' | 'subscribers' | 'users',
+  });
+  const [newsletterSending, setNewsletterSending] = useState(false);
 
   // Form state for changing personal password
   const [newPassword, setNewPassword] = useState('');
@@ -93,6 +105,7 @@ export default function AdminPortalPage() {
         inquiries: 'program_inquiries',
         volunteers: 'volunteers',
         donations: 'donations',
+        newsletter_subs: 'newsletter_subscribers',
       };
       tableName = inboxMap[activeSubTab] || 'contact_messages';
     } else if (activeMainTab === 'content') {
@@ -104,6 +117,8 @@ export default function AdminPortalPage() {
       tableName = contentMap[activeSubTab] || 'exclusive_content';
     } else if (activeMainTab === 'users') {
       tableName = 'profiles';
+    } else if (activeMainTab === 'newsletters') {
+      tableName = 'newsletters';
     }
 
     if (supabase && isSupabaseConfigured) {
@@ -298,6 +313,67 @@ export default function AdminPortalPage() {
     setLoading(false);
   };
 
+  // Broadcast newsletter to subscribers
+  const handleSendNewsletter = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newsletterData.subject || !newsletterData.content) {
+      showToast('Por favor completa el asunto y el contenido del boletín', 'error');
+      return;
+    }
+
+    setNewsletterSending(true);
+    try {
+      const res = await fetch('/api/newsletter/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          subject: newsletterData.subject,
+          content: newsletterData.content,
+          audience: newsletterData.audience,
+          author: profile?.full_name || 'Equipo Diversamente',
+        }),
+      });
+
+      const data = await res.json();
+      if (res.ok && data.success) {
+        showToast(`¡Boletín emitido con éxito a ${data.recipientsCount} personas!`, 'success');
+        setIsNewsletterModalOpen(false);
+        setNewsletterData({ subject: '', content: '', audience: 'all' });
+        loadData();
+      } else {
+        showToast(data.error || 'Error al enviar el boletín', 'error');
+      }
+    } catch (err: any) {
+      showToast('Error al conectar con el servidor: ' + err.message, 'error');
+    }
+    setNewsletterSending(false);
+  };
+
+  // Copy all subscriber emails to clipboard
+  const handleCopySubscriberEmails = async () => {
+    try {
+      let emails: string[] = [];
+      if (supabase && isSupabaseConfigured) {
+        const { data: subs } = await (supabase.from('newsletter_subscribers') as any).select('email').eq('is_active', true);
+        if (subs) emails.push(...subs.map((s: any) => s.email));
+      } else {
+        const local = JSON.parse(localStorage.getItem('diversamente_local_newsletter_subscribers') || '[]');
+        emails = local.map((l: any) => l.email);
+      }
+
+      if (emails.length === 0) {
+        showToast('No hay correos registrados en la lista de suscriptores aún.', 'info');
+        return;
+      }
+
+      const listStr = Array.from(new Set(emails)).join(', ');
+      await navigator.clipboard.writeText(listStr);
+      showToast(`¡${emails.length} correos copiados al portapapeles!`, 'success');
+    } catch (err) {
+      showToast('Error al copiar correos al portapapeles', 'error');
+    }
+  };
+
   // Change logged-in Administrator password
   const handleChangePassword = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -315,7 +391,6 @@ export default function AdminPortalPage() {
 
     if (supabase && isSupabaseConfigured) {
       try {
-        // Verificar si hay sesión activa en Supabase Auth
         const { data: sessionData } = await supabase.auth.getSession();
 
         if (sessionData?.session?.user) {
@@ -333,7 +408,6 @@ export default function AdminPortalPage() {
             setConfirmPassword('');
           }
         } else {
-          // Si no había sesión activa en Supabase Auth, registrar la cuenta con la nueva clave
           const { error: signUpError } = await supabase.auth.signUp({
             email: targetEmail,
             password: newPassword,
@@ -482,21 +556,21 @@ export default function AdminPortalPage() {
         </div>
       </div>
 
-      {/* Main Mode Navigation (Content vs Inbox vs Users) */}
-      <div className="flex bg-surface-container-low p-1.5 rounded-2xl border border-border mb-8 max-w-xl">
+      {/* Main Mode Navigation (Content vs Inbox vs Users vs Newsletters) */}
+      <div className="flex bg-surface-container-low p-1.5 rounded-2xl border border-border mb-8 max-w-2xl overflow-x-auto">
         <button
           onClick={() => {
             setActiveMainTab('content');
             setActiveSubTab('exclusive');
           }}
-          className={`flex-1 py-2.5 text-xs font-label font-bold rounded-xl transition-all flex items-center justify-center gap-2 ${
+          className={`flex-1 py-2.5 px-3 text-xs font-label font-bold rounded-xl transition-all flex items-center justify-center gap-1.5 whitespace-nowrap ${
             activeMainTab === 'content'
               ? 'bg-primary text-on-primary shadow-sm'
               : 'text-on-surface-variant hover:text-primary'
           }`}
         >
           <Layers className="w-4 h-4" />
-          <span>Editor de Contenido</span>
+          <span>Editor Contenido</span>
         </button>
 
         <button
@@ -504,14 +578,14 @@ export default function AdminPortalPage() {
             setActiveMainTab('inbox');
             setActiveSubTab('messages');
           }}
-          className={`flex-1 py-2.5 text-xs font-label font-bold rounded-xl transition-all flex items-center justify-center gap-2 ${
+          className={`flex-1 py-2.5 px-3 text-xs font-label font-bold rounded-xl transition-all flex items-center justify-center gap-1.5 whitespace-nowrap ${
             activeMainTab === 'inbox'
               ? 'bg-primary text-on-primary shadow-sm'
               : 'text-on-surface-variant hover:text-primary'
           }`}
         >
           <Mail className="w-4 h-4" />
-          <span>Bandeja de Entrada</span>
+          <span>Bandeja</span>
         </button>
 
         <button
@@ -519,14 +593,29 @@ export default function AdminPortalPage() {
             setActiveMainTab('users');
             setActiveSubTab('profiles');
           }}
-          className={`flex-1 py-2.5 text-xs font-label font-bold rounded-xl transition-all flex items-center justify-center gap-2 ${
+          className={`flex-1 py-2.5 px-3 text-xs font-label font-bold rounded-xl transition-all flex items-center justify-center gap-1.5 whitespace-nowrap ${
             activeMainTab === 'users'
               ? 'bg-primary text-on-primary shadow-sm'
               : 'text-on-surface-variant hover:text-primary'
           }`}
         >
           <Users className="w-4 h-4" />
-          <span>Usuarios & Administradores</span>
+          <span>Usuarios</span>
+        </button>
+
+        <button
+          onClick={() => {
+            setActiveMainTab('newsletters');
+            setActiveSubTab('broadcasts');
+          }}
+          className={`flex-1 py-2.5 px-3 text-xs font-label font-bold rounded-xl transition-all flex items-center justify-center gap-1.5 whitespace-nowrap ${
+            activeMainTab === 'newsletters'
+              ? 'bg-primary text-on-primary shadow-sm'
+              : 'text-on-surface-variant hover:text-primary'
+          }`}
+        >
+          <Radio className="w-4 h-4" />
+          <span>Boletines Informativos</span>
         </button>
       </div>
 
@@ -566,6 +655,7 @@ export default function AdminPortalPage() {
                 { key: 'inquiries', label: 'Inscripciones a Programas', icon: Calendar },
                 { key: 'volunteers', label: 'Voluntariado', icon: Users },
                 { key: 'donations', label: 'Donaciones', icon: Heart },
+                { key: 'newsletter_subs', label: 'Lista Suscriptores', icon: Radio },
               ].map((tab) => (
                 <button
                   key={tab.key}
@@ -586,6 +676,12 @@ export default function AdminPortalPage() {
           {activeMainTab === 'users' && (
             <span className="text-xs font-label font-bold text-on-surface self-center">
               Directorio de Usuarios y Gestión de Roles de Administrador
+            </span>
+          )}
+
+          {activeMainTab === 'newsletters' && (
+            <span className="text-xs font-label font-bold text-on-surface self-center">
+              Emisión de Boletines Masivos a Familias & Suscriptores
             </span>
           )}
         </div>
@@ -610,6 +706,26 @@ export default function AdminPortalPage() {
               <UserPlus className="w-4 h-4" />
               <span>Crear Nuevo Administrador</span>
             </button>
+          )}
+
+          {activeMainTab === 'newsletters' && (
+            <div className="flex items-center gap-2">
+              <button
+                onClick={handleCopySubscriberEmails}
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-surface-container-low hover:bg-surface-container-high border border-border text-xs font-label font-semibold text-on-surface transition-colors"
+                title="Copiar lista de correos para pegarla en Gmail o Mailchimp"
+              >
+                <Copy className="w-3.5 h-3.5 text-secondary" />
+                <span>Copiar Correos</span>
+              </button>
+              <button
+                onClick={() => setIsNewsletterModalOpen(true)}
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-primary text-on-primary text-xs font-label font-semibold hover:opacity-90 active:scale-95 transition-all shadow-sm"
+              >
+                <Send className="w-3.5 h-3.5" />
+                <span>Redactar Boletín</span>
+              </button>
+            </div>
           )}
 
           <div className="relative flex-grow sm:flex-grow-0 sm:w-56">
@@ -648,6 +764,8 @@ export default function AdminPortalPage() {
                 ? 'Haz clic en "Publicar Nuevo Material" para subir tu primer recurso.'
                 : activeMainTab === 'users'
                 ? 'Haz clic en "Crear Nuevo Administrador" para registrar a otro miembro de tu equipo.'
+                : activeMainTab === 'newsletters'
+                ? 'Haz clic en "Redactar Boletín" para emitir el primer comunicado a tu comunidad.'
                 : 'Los envíos de visitantes y suscriptores aparecerán aquí.'}
             </p>
           </div>
@@ -720,6 +838,48 @@ export default function AdminPortalPage() {
               </tbody>
             </table>
           </div>
+        ) : activeMainTab === 'newsletters' ? (
+          /* Dedicated Newsletters Broadcast View */
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs font-body">
+              <thead className="bg-surface-container-low border-b border-border text-on-surface-variant uppercase font-label">
+                <tr>
+                  <th className="px-5 py-3">Fecha de Emisión</th>
+                  <th className="px-5 py-3">Asunto del Boletín</th>
+                  <th className="px-5 py-3">Audiencia Destino</th>
+                  <th className="px-5 py-3">Destinatarios Alcanzados</th>
+                  <th className="px-5 py-3">Estado</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border/60">
+                {filteredData.map((nl) => (
+                  <tr key={nl.id || Math.random()} className="hover:bg-surface-container-low/40 transition-colors">
+                    <td className="px-5 py-4 whitespace-nowrap text-on-surface-variant font-mono text-[11px]">
+                      {nl.created_at ? new Date(nl.created_at).toLocaleString('es-CO') : 'Reciente'}
+                    </td>
+                    <td className="px-5 py-4">
+                      <div className="font-semibold text-on-surface text-sm mb-0.5">{nl.subject}</div>
+                      <div className="text-[11px] text-on-surface-variant line-clamp-1">{nl.content}</div>
+                    </td>
+                    <td className="px-5 py-4">
+                      <span className="inline-block px-2.5 py-0.5 rounded bg-surface-container-low text-primary font-semibold text-[11px]">
+                        {nl.audience === 'all' ? 'Toda la Comunidad' : nl.audience === 'subscribers' ? 'Solo Newsletter' : 'Usuarios Registrados'}
+                      </span>
+                    </td>
+                    <td className="px-5 py-4 font-mono font-bold text-xs text-primary">
+                      {nl.sent_count || 0} personas
+                    </td>
+                    <td className="px-5 py-4 whitespace-nowrap">
+                      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border border-emerald-200">
+                        <CheckCircle className="w-3 h-3" />
+                        <span>Enviado</span>
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         ) : (
           /* General Inbox & Content View */
           <div className="overflow-x-auto">
@@ -740,7 +900,7 @@ export default function AdminPortalPage() {
                       {row.created_at ? new Date(row.created_at).toLocaleDateString('es-CO') : 'Reciente'}
                     </td>
                     <td className="px-5 py-4 font-medium text-on-surface">
-                      <div>{row.title || row.name || row.full_name || row.donor_name || 'Sin nombre'}</div>
+                      <div>{row.title || row.name || row.full_name || row.donor_name || row.email || 'Sin nombre'}</div>
                       <div className="text-[11px] text-on-surface-variant font-mono">{row.email || row.donor_email || row.author}</div>
                     </td>
                     <td className="px-5 py-4 text-on-surface">
@@ -750,7 +910,7 @@ export default function AdminPortalPage() {
                     </td>
                     <td className="px-5 py-4 text-on-surface-variant max-w-sm leading-relaxed">
                       <p className="line-clamp-2">
-                        {row.description || row.message || row.motivation || row.notes || 'Sin descripción adicional.'}
+                        {row.description || row.message || row.motivation || row.notes || (row.is_active ? 'Suscripción activa al boletín' : 'Sin descripción adicional.')}
                       </p>
                       {row.amount && (
                         <div className="font-bold text-primary text-xs mt-1">
@@ -761,7 +921,7 @@ export default function AdminPortalPage() {
                     <td className="px-5 py-4 whitespace-nowrap">
                       <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-semibold bg-secondary-container text-on-secondary-container">
                         <CheckCircle className="w-3 h-3" />
-                        <span>{row.role || row.status || (row.is_published ? 'Publicado' : 'Borrador')}</span>
+                        <span>{row.role || row.status || (row.is_active !== undefined ? 'Activo' : row.is_published ? 'Publicado' : 'Borrador')}</span>
                       </span>
                     </td>
                   </tr>
@@ -1015,7 +1175,104 @@ export default function AdminPortalPage() {
         </div>
       )}
 
-      {/* Modal 3: Cambiar Mi Contraseña */}
+      {/* Modal 3: Redactar y Enviar Boletín Masivo */}
+      {isNewsletterModalOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-surface-dim/80 backdrop-blur-md animate-fadeIn"
+          role="dialog"
+          aria-modal="true"
+        >
+          <div className="relative w-full max-w-2xl bg-surface rounded-3xl p-6 sm:p-8 shadow-2xl border border-border max-h-[90vh] overflow-y-auto">
+            <button
+              onClick={() => setIsNewsletterModalOpen(false)}
+              className="absolute top-5 right-5 p-2 rounded-full text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <div className="mb-6">
+              <div className="w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center mb-3">
+                <Radio className="w-6 h-6" />
+              </div>
+              <h3 className="text-2xl font-headline font-semibold text-on-surface">
+                Redactar y Emitir Boletín Informativo
+              </h3>
+              <p className="text-xs font-body text-on-surface-variant mt-1">
+                Envía comunicados oficiales, anuncios de nuevos webinars y recursos directamente a la bandeja de correo de los usuarios inscritos.
+              </p>
+            </div>
+
+            <form onSubmit={handleSendNewsletter} className="space-y-4">
+              <div>
+                <label className="block text-xs font-label font-bold uppercase tracking-wider text-on-surface mb-1.5">
+                  Audiencia / Destinatarios *
+                </label>
+                <select
+                  value={newsletterData.audience}
+                  onChange={(e) => setNewsletterData({ ...newsletterData, audience: e.target.value as any })}
+                  className="w-full px-3.5 py-2.5 text-sm bg-surface-container-lowest border border-border rounded-xl text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/40 font-body"
+                >
+                  <option value="all">Toda la Comunidad (Suscriptores del Boletín + Familias Registradas)</option>
+                  <option value="subscribers">Solo Personas Inscritas al Newsletter</option>
+                  <option value="users">Solo Familias Registradas en el Portal</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-xs font-label font-bold uppercase tracking-wider text-on-surface mb-1.5">
+                  Asunto del Correo *
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={newsletterData.subject}
+                  onChange={(e) => setNewsletterData({ ...newsletterData, subject: e.target.value })}
+                  placeholder="Ej. Boletín Diversamente: Nuevo Taller de Regulación Sensorial y Guías HD"
+                  className="w-full px-3.5 py-2.5 text-sm bg-surface-container-lowest border border-border rounded-xl text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/40"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-label font-bold uppercase tracking-wider text-on-surface mb-1.5">
+                  Cuerpo del Mensaje *
+                </label>
+                <textarea
+                  rows={8}
+                  required
+                  value={newsletterData.content}
+                  onChange={(e) => setNewsletterData({ ...newsletterData, content: e.target.value })}
+                  placeholder="Estimadas familias y comunidad:&#10;&#10;Nos complace compartir con ustedes las novedades de este mes...&#10;&#10;1. Nuevo Webinar disponible en el portal.&#10;2. Descarga del kit sensorial imprimible.&#10;&#10;Con cariño,&#10;Equipo Diversamente"
+                  className="w-full px-3.5 py-2.5 text-sm bg-surface-container-lowest border border-border rounded-xl text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/40 font-body leading-relaxed"
+                />
+              </div>
+
+              <div className="p-3.5 rounded-xl bg-surface-container-low border border-border text-xs text-on-surface-variant font-body">
+                💡 <strong>Tip de entrega:</strong> El boletín quedará registrado permanentemente en la base de datos de Supabase y los correos se enviarán automáticamente a la lista seleccionada.
+              </div>
+
+              <div className="pt-3 border-t border-border flex justify-end gap-3">
+                <button
+                  type="button"
+                  onClick={() => setIsNewsletterModalOpen(false)}
+                  className="px-5 py-2.5 rounded-xl border border-border text-xs font-label font-semibold text-on-surface hover:bg-surface-container-low"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  disabled={newsletterSending}
+                  className="inline-flex items-center gap-2 bg-primary text-on-primary px-6 py-2.5 rounded-xl text-xs font-label font-semibold hover:opacity-90 disabled:opacity-50 active:scale-95 transition-all shadow-sm"
+                >
+                  <Send className="w-4 h-4" />
+                  <span>{newsletterSending ? 'Enviando boletín...' : 'Emitir Boletín Ahora'}</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Modal 4: Cambiar Mi Contraseña */}
       {isChangePasswordModalOpen && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-surface-dim/80 backdrop-blur-md animate-fadeIn"

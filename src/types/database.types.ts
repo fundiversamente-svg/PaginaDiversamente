@@ -363,6 +363,41 @@ export interface Database {
           is_featured?: boolean;
         };
       };
+      newsletters: {
+        Row: {
+          id: string;
+          created_at: string;
+          subject: string;
+          content: string;
+          audience: 'subscribers' | 'users' | 'all';
+          sent_count: number;
+          status: 'draft' | 'sent';
+          sent_at: string | null;
+          author: string;
+        };
+        Insert: {
+          id?: string;
+          created_at?: string;
+          subject: string;
+          content: string;
+          audience?: 'subscribers' | 'users' | 'all';
+          sent_count?: number;
+          status?: 'draft' | 'sent';
+          sent_at?: string | null;
+          author?: string;
+        };
+        Update: {
+          id?: string;
+          created_at?: string;
+          subject?: string;
+          content?: string;
+          audience?: 'subscribers' | 'users' | 'all';
+          sent_count?: number;
+          status?: 'draft' | 'sent';
+          sent_at?: string | null;
+          author?: string;
+        };
+      };
     };
   };
 }

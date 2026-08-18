@@ -13,7 +13,7 @@ interface VideoModalProps {
 export default function VideoModal({
   isOpen,
   onClose,
-  videoUrl = 'https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=1',
+  videoUrl = 'https://www.youtube.com/embed/vD5pWKwhNt8?si=_gQcZ3BN5M2RCa-m',
   title = 'Conoce nuestro impacto y visión',
 }: VideoModalProps) {
   useEffect(() => {

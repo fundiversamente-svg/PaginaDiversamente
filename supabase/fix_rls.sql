@@ -192,6 +192,18 @@ CREATE TABLE IF NOT EXISTS public.newsletter_subscribers (
     is_active BOOLEAN DEFAULT true
 );
 
+CREATE TABLE IF NOT EXISTS public.newsletters (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+    subject VARCHAR(255) NOT NULL,
+    content TEXT NOT NULL,
+    audience VARCHAR(100) DEFAULT 'all',
+    sent_count INTEGER DEFAULT 0,
+    status VARCHAR(50) DEFAULT 'sent',
+    sent_at TIMESTAMP WITH TIME ZONE,
+    author VARCHAR(100) DEFAULT 'Equipo Diversamente'
+);
+
 -- 6. PERMISOS GLOBALES (GRANTS)
 GRANT USAGE ON SCHEMA public TO anon, authenticated, service_role;
 GRANT ALL ON ALL TABLES IN SCHEMA public TO anon, authenticated, service_role;
@@ -208,8 +220,17 @@ ALTER TABLE public.program_inquiries ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.volunteers ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.donations ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.newsletter_subscribers ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.newsletters ENABLE ROW LEVEL SECURITY;
 
 -- 8. POLÍTICAS RLS IDEMPOTENTES (DROP IF EXISTS + CREATE)
+
+-- 8.0 NEWSLETTERS
+DROP POLICY IF EXISTS "Solo admin puede ver y crear boletines" ON public.newsletters;
+CREATE POLICY "Solo admin puede ver y crear boletines"
+    ON public.newsletters FOR ALL
+    TO authenticated
+    USING (public.is_admin())
+    WITH CHECK (public.is_admin());
 
 -- 8.1 PROFILES
 DROP POLICY IF EXISTS "Lectura de propio perfil o administradores" ON public.profiles;
