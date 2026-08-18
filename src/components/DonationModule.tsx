@@ -201,7 +201,7 @@ export default function DonationModule() {
                 </div>
                 <button
                   type="button"
-                  onClick={() => handleCopy('3150488457', 'nequi')}
+                  onClick={() => handleCopy('3185713991', 'nequi')}
                   className="inline-flex items-center justify-center gap-1.5 text-xs text-primary hover:underline font-label mt-1"
                 >
                   {copiedKey === 'nequi' ? <CheckCheck className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
@@ -234,7 +234,7 @@ export default function DonationModule() {
                 </div>
                 <button
                   type="button"
-                  onClick={() => handleCopy('3150488457', 'daviplata')}
+                  onClick={() => handleCopy('3185713991', 'daviplata')}
                   className="inline-flex items-center justify-center gap-1.5 text-xs text-primary hover:underline font-label mt-1"
                 >
                   {copiedKey === 'daviplata' ? <CheckCheck className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}

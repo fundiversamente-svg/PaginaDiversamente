@@ -98,7 +98,7 @@ export default function Footer() {
                 <span>fundiversamente@gmail.com</span>
               </a>
               <a
-                href="tel:+573150488457"
+                href="tel:+573185713991"
                 className="flex items-center gap-2.5 hover:text-primary transition-colors"
               >
                 <Phone className="w-4 h-4 text-primary flex-shrink-0" />
