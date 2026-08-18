@@ -33,7 +33,7 @@ const FALLBACK_EXCLUSIVE_CONTENT: ExclusiveItem[] = [
     title: 'Webinar Exclusivo: Regulación Emocional y Crisis Sensoriales en Casa',
     description: 'Taller clínico de 75 minutos dirigido por la psicóloga Elena Silva, con casos reales, herramientas de autorregulación y protocolos de desescalamiento sensorial para padres.',
     type: 'webinar',
-    video_url: 'https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ',
+    video_url: 'https://www.youtube.com/embed/vD5pWKwhNt8?si=_gQcZ3BN5M2RCa-m',
     download_url: '/exclusive/guia_regulacion_sensorial.pdf',
     file_size: '75 min + PDF Guía',
     access_tier: 'subscriber',
