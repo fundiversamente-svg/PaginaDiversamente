@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Diversamente - Recursos y Contacto</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:wght@400;700&amp;family=Atkinson+Hyperlegible+Next:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-container": "#ffe4d7",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-fixed": "#241a00",
+                        "surface-container-low": "#f5f3f0",
+                        "primary-fixed-dim": "#f4ba9c",
+                        "outline-variant": "#d5c3ba",
+                        "tertiary-fixed": "#ffe088",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "inverse-on-surface": "#f2f0ed",
+                        "surface-dim": "#dbdad6",
+                        "on-secondary-fixed": "#161e07",
+                        "surface-tint": "#80543c",
+                        "inverse-primary": "#f4ba9c",
+                        "on-secondary-container": "#5e684a",
+                        "secondary": "#586244",
+                        "surface-variant": "#e4e2de",
+                        "secondary-container": "#dce7c1",
+                        "on-tertiary-fixed-variant": "#574500",
+                        "surface-container-high": "#eae8e4",
+                        "on-primary": "#ffffff",
+                        "tertiary-container": "#cca72f",
+                        "on-primary-fixed": "#311302",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-container": "#4e3d00",
+                        "secondary-fixed-dim": "#c0cba7",
+                        "on-secondary-fixed-variant": "#414a2e",
+                        "on-surface-variant": "#51443e",
+                        "error": "#ba1a1a",
+                        "secondary-fixed": "#dce7c1",
+                        "tertiary-fixed-dim": "#e9c349",
+                        "inverse-surface": "#30312e",
+                        "primary-container": "#8c5e45",
+                        "on-surface": "#1b1c1a",
+                        "tertiary": "#735c00",
+                        "primary-fixed": "#ffdbca",
+                        "on-error": "#ffffff",
+                        "surface": "#fdfcfb",
+                        "background": "#fdfcfb",
+                        "on-error-container": "#93000a",
+                        "surface-container": "#f5f3f0",
+                        "on-background": "#1b1c1a",
+                        "surface-bright": "#fdfcfb",
+                        "outline": "#83746d",
+                        "surface-container-highest": "#e4e2de",
+                        "on-primary-fixed-variant": "#653d26",
+                        "primary": "#71472f"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "sm": "12px",
+                        "lg": "48px",
+                        "md": "24px",
+                        "margin-desktop": "64px",
+                        "xl": "80px",
+                        "base": "8px",
+                        "gutter": "24px",
+                        "xs": "4px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Libre Caslon Text"],
+                        "label-md": ["Atkinson Hyperlegible Next"],
+                        "headline-lg-mobile": ["Libre Caslon Text"],
+                        "body-md": ["Atkinson Hyperlegible Next"],
+                        "headline-md": ["Libre Caslon Text"],
+                        "body-lg": ["Atkinson Hyperlegible Next"],
+                        "headline-xl": ["Libre Caslon Text"],
+                        "caption": ["Atkinson Hyperlegible Next"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "600" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "headline-xl": ["48px", { "lineHeight": "56px", "fontWeight": "700" }],
+                        "caption": ["12px", { "lineHeight": "16px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .card-shadow {
+            box-shadow: 0px 4px 20px rgba(62, 47, 40, 0.04);
+        }
+        .hero-pattern {
+            background-color: #fdfcfb;
+            background-image: radial-gradient(#83746d 0.5px, transparent 0.5px), radial-gradient(#83746d 0.5px, #fdfcfb 0.5px);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+            opacity: 0.4;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col" data-mode="connect">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-md shadow-sm transition-all duration-300 ease-in-out">
+<div class="flex justify-between items-center px-margin-desktop h-20 w-full max-w-7xl mx-auto">
+<div class="font-headline-md text-headline-md font-semibold text-primary tracking-tight">
+                Diversamente
+            </div>
+<nav class="hidden md:flex space-x-lg font-label-md text-label-md">
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:opacity-80 hover:scale-105 active:scale-95 transition-all" href="#">Inicio</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:opacity-80 hover:scale-105 active:scale-95 transition-all" href="#">Sobre Nosotros</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:opacity-80 hover:scale-105 active:scale-95 transition-all" href="#">Programas</a>
+<a class="text-primary border-b-2 border-primary pb-1 font-bold hover:opacity-80 hover:scale-105 active:scale-95 transition-all" href="#">Recursos</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:opacity-80 hover:scale-105 active:scale-95 transition-all" href="#contact">Contacto</a>
+</nav>
+<button class="bg-primary text-on-primary font-label-md text-label-md py-sm px-md rounded-lg hover:opacity-90 transition-opacity hidden md:block hover:shadow-md active:scale-95 transition-all">
+                Donar Ahora
+            </button>
+</div>
+</header>
+<main class="flex-grow pt-24 pb-xl">
+<!-- Hero Section -->
+<section class="relative pt-xl pb-lg px-margin-mobile md:px-margin-desktop max-w-7xl mx-auto overflow-hidden">
+<div class="absolute inset-0 hero-pattern -z-10 rounded-3xl"></div>
+<div class="text-center max-w-3xl mx-auto mb-lg">
+<h1 class="font-headline-xl text-headline-xl text-primary mb-md">Fomentando el Conocimiento y la Conexión</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">
+                    Descubra una biblioteca de guías y herramientas seleccionadas diseñadas para apoyar su viaje. Comuníquese con nuestra comunidad para recibir orientación personalizada.
+                </p>
+</div>
+</section>
+<!-- Resources Section -->
+<section class="py-lg px-margin-mobile md:px-margin-desktop max-w-7xl mx-auto">
+<h2 class="font-headline-lg text-headline-lg text-primary mb-md">Biblioteca de Recursos</h2><div class="mb-lg flex flex-wrap gap-md items-center">
+<div class="flex flex-col items-start bg-surface-container-lowest p-2 rounded-xl">
+<img alt="Diversamente Aprendizaje" class="h-24 w-auto object-contain rounded-lg" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBcqeA4YAKZbCLaK_OdWdjW3dO8KXFcxPlKayJD4C9g2cQo0t5HYTf5NKPUn0iZfgK8C1rZJVymW6LT5JR_NQBYnQ7Ms75eq_oPHr3xAqsAT0EI2oAqjZwJjwODaTXM4qJ7vcLt7dECUvhkQ5N-N3ivZmy9XtIORk0vtAbwroTPYLk7ShFw4YUBmiBYzLOOibciC_rGNrzypXG64kVtf4ClnW_GOp2kGTjtJwhziICyI5BIy3uZYvfemBkgKalS3HHyyCE"/>
+</div>
+<div class="w-px h-12 bg-outline-variant opacity-30 hidden md:block"></div>
+<div class="flex flex-col items-start bg-surface-container-lowest p-2 rounded-xl">
+<img alt="Diversamente Amor &amp; Comprensión" class="h-24 w-auto object-contain rounded-lg" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA4D5iuhmb_PomFuvtpQfrNPamfJMRVEVJZ7C4kbSRgQmu3MCXhf6Jcdac804lOeO5PY_qzQ_-zCc4enFTqCL_jJlvo7X9FY7E1ZQ3Z0fCToxwbMt2JloxCDW13Tmh2hwXGqNkzsixRj9xh2Kkwmqwa-oR7-obK1WSJkeyjgLxBZnHKWnfmm2N8F5X1ZMmlJF6nWROgSQlVdVFCxh9v2NTCfX2W3hruIlv9e5O8Aegc6YlPUiFQ8rhTE34j93w7gPiIUrc"/>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<!-- Resource Card 1 -->
+<div class="bg-surface-container-lowest rounded-xl p-md card-shadow flex flex-col justify-between border border-surface-variant hover:-translate-y-1 hover:shadow-lg hover:border-primary transition-all duration-300">
+<div>
+<div class="bg-secondary-container text-on-secondary-container inline-block px-sm py-xs rounded-full font-label-md text-caption mb-sm">Guía</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-sm">Comprendiendo las Primeras Señales</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md">Una guía completa para que los padres reconozcan los marcadores tempranos del desarrollo y sepan cuándo buscar asesoramiento profesional.</p>
+</div>
+<button class="flex items-center text-primary font-label-md hover:underline decoration-tertiary">
+<span class="material-symbols-outlined mr-xs">download</span> Descargar PDF
+                    </button>
+</div>
+<!-- Resource Card 2 -->
+<div class="bg-surface-container-lowest rounded-xl p-md card-shadow flex flex-col justify-between border border-surface-variant hover:-translate-y-1 hover:shadow-lg hover:border-primary transition-all duration-300">
+<div>
+<div class="bg-tertiary-container text-on-tertiary-container inline-block px-sm py-xs rounded-full font-label-md text-caption mb-sm">Herramientas</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-sm">Estrategias de Apoyo Diario</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md">Pasos prácticos y viables para crear un entorno de apoyo en el hogar para personas con diversas necesidades.</p>
+</div>
+<button class="flex items-center text-primary font-label-md hover:underline decoration-tertiary">
+<span class="material-symbols-outlined mr-xs">download</span> Descargar PDF
+                    </button>
+</div>
+<!-- Resource Card 3 -->
+<div class="bg-surface-container-lowest rounded-xl p-md card-shadow flex flex-col justify-between border border-surface-variant hover:-translate-y-1 hover:shadow-lg hover:border-primary transition-all duration-300">
+<div>
+<div class="bg-secondary-container text-on-secondary-container inline-block px-sm py-xs rounded-full font-label-md text-caption mb-sm">Directorio</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-sm">Red de Especialistas Locales</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md">Una lista seleccionada de terapeutas locales de confianza, educadores y grupos de apoyo en su área.</p>
+</div>
+<button class="flex items-center text-primary font-label-md hover:underline decoration-tertiary">
+<span class="material-symbols-outlined mr-xs">download</span> Descargar PDF
+                    </button>
+</div>
+</div>
+</section>
+<!-- Bento Grid: Contact & Donate -->
+<section class="py-xl px-margin-mobile md:px-margin-desktop max-w-7xl mx-auto" id="contact">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Contact Form (Spans 8 cols) -->
+<div class="md:col-span-8 bg-surface-container-lowest rounded-xl p-lg card-shadow border border-surface-variant">
+<h2 class="font-headline-lg text-headline-lg text-primary mb-sm">Póngase en Contacto</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mb-lg">Estamos aquí para escuchar y ayudar. Complete el siguiente formulario y nuestro equipo se comunicará con usted a la brevedad.</p>
+<form class="space-y-md">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<div class="flex flex-col">
+<label class="font-label-md text-label-md text-on-surface mb-xs" for="name">Nombre Completo</label>
+<input class="bg-surface-container-lowest border border-outline rounded-md p-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" id="name" type="text"/>
+</div>
+<div class="flex flex-col">
+<label class="font-label-md text-label-md text-on-surface mb-xs" for="email">Correo Electrónico</label>
+<input class="bg-surface-container-lowest border border-outline rounded-md p-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" id="email" type="email"/>
+</div>
+</div>
+<div class="flex flex-col">
+<label class="font-label-md text-label-md text-on-surface mb-xs" for="topic">¿Cómo podemos ayudar?</label>
+<select class="bg-surface-container-lowest border border-outline rounded-md p-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" id="topic">
+<option>Consulta General</option>
+<option>Información del Programa</option>
+<option>Solicitud de Apoyo</option>
+<option>Voluntariado</option>
+</select>
+</div>
+<div class="flex flex-col">
+<label class="font-label-md text-label-md text-on-surface mb-xs" for="message">Mensaje</label>
+<textarea class="bg-surface-container-lowest border border-outline rounded-md p-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" id="message" rows="4"></textarea>
+</div>
+<button class="bg-primary text-on-primary font-label-md text-label-md py-sm px-lg rounded-lg hover:opacity-90 transition-opacity w-full md:w-auto hover:shadow-md active:scale-95 transition-all" type="submit">
+                            Enviar Mensaje
+                        </button>
+</form>
+</div>
+<!-- Donate & Info (Spans 4 cols) -->
+<div class="md:col-span-4 flex flex-col gap-gutter">
+<!-- Donate Card -->
+<div class="bg-primary-container text-on-primary-container rounded-xl p-lg flex flex-col justify-center items-center text-center flex-grow card-shadow relative overflow-hidden">
+<div class="absolute inset-0 opacity-10 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPgo8cmVjdCB3aWR0aD0iOCIgaGVpZ2h0PSI4IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9IjAuMSI+PC9yZWN0Pgo8cGF0aCBkPSJNMCAwbDh2OFoiIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4yIj48L3BhdGg+Cjwvc3ZnPg==')]"></div>
+<span class="material-symbols-outlined text-headline-xl mb-md z-10" data-weight="fill">favorite</span>
+<h3 class="font-headline-md text-headline-md mb-sm z-10">Apoye Nuestra Misión</h3>
+<p class="font-body-md text-body-md mb-md z-10">Su contribución nos ayuda a proporcionar recursos vitales y apoyo a las familias que lo necesitan.</p>
+<button class="bg-on-primary-container text-primary-container font-label-md text-label-md py-sm px-lg rounded-lg hover:opacity-90 transition-opacity w-full z-10 hover:shadow-md active:scale-95 transition-all">
+                            Hacer una Donación
+                        </button>
+</div>
+<!-- Contact Info Card -->
+<div class="bg-surface-container-lowest rounded-xl p-md border border-surface-variant card-shadow">
+<h4 class="font-headline-md text-on-surface mb-md">Contacto Directo</h4>
+<ul class="space-y-sm font-body-md text-on-surface-variant">
+<li class="flex items-center"><span class="material-symbols-outlined text-primary mr-sm">mail</span> fundiversamente@gmail.com</li>
+<li class="flex items-center"><span class="material-symbols-outlined text-primary mr-sm">call</span> 315 048 84 57</li>
+<li class="flex items-start"><span class="material-symbols-outlined text-primary mr-sm mt-xs">location_on</span> Bogotá, Colombia</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-xl mt-xl bg-surface-container-low flex flex-col items-center gap-md px-margin-desktop text-center flat no shadows opacity-90 hover:opacity-100 transition-opacity">
+<div class="font-headline-md text-headline-md font-semibold text-primary">
+            Diversamente
+        </div>
+<div class="flex gap-md font-body-md text-body-md">
+<a class="text-on-surface-variant hover:text-primary underline decoration-tertiary" href="#">Política de Privacidad</a>
+<a class="text-on-surface-variant hover:text-primary underline decoration-tertiary" href="#">Términos de Servicio</a>
+<a class="text-on-surface-variant hover:text-primary underline decoration-tertiary" href="#">Voluntariado</a>
+<a class="text-on-surface-variant hover:text-primary underline decoration-tertiary" href="#">Nuestro Impacto</a>
+</div>
+<div class="font-caption text-caption text-on-surface-variant">
+            © 2024 Diversamente - Amar, aceptar y avanzar juntos. Todos los derechos reservados.
+        </div>
+</footer>
+</body></html>

@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es" style=""><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Diversamente - Amar, aceptar y avanzar juntos</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&amp;family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "on-tertiary-fixed": "#241a00",
+                "surface-container-high": "#2a2a28",
+                "on-primary": "#4b2712",
+                "error-container": "#93000a",
+                "inverse-surface": "#e4e2de",
+                "surface-container-lowest": "#0e0e0d",
+                "tertiary-container": "#cca72f",
+                "on-tertiary-container": "#4e3d00",
+                "on-background": "#e4e2de",
+                "on-secondary-fixed-variant": "#414a2e",
+                "on-primary-container": "#ffe4d7",
+                "on-primary-fixed": "#311302",
+                "error": "#ffb4ab",
+                "on-surface-variant": "#d5c3ba",
+                "background": "#131412",
+                "outline-variant": "#51443e",
+                "on-error-container": "#ffdad6",
+                "on-tertiary": "#3c2f00",
+                "secondary-fixed-dim": "#c0cba7",
+                "on-secondary": "#2b331a",
+                "surface-bright": "#393937",
+                "tertiary": "#e9c349",
+                "inverse-on-surface": "#30312e",
+                "outline": "#9e8d86",
+                "secondary": "#c0cba7",
+                "surface-variant": "#343533",
+                "secondary-fixed": "#dce7c1",
+                "surface": "#131412",
+                "secondary-container": "#414a2e",
+                "on-error": "#690005",
+                "tertiary-fixed-dim": "#e9c349",
+                "on-secondary-container": "#afb996",
+                "inverse-primary": "#80543c",
+                "primary": "#f4ba9c",
+                "primary-fixed": "#ffdbca",
+                "primary-container": "#8c5e45",
+                "tertiary-fixed": "#ffe088",
+                "on-primary-fixed-variant": "#653d26",
+                "surface-tint": "#f4ba9c",
+                "surface-container-low": "#1b1c1a",
+                "on-surface": "#e4e2de",
+                "on-tertiary-fixed-variant": "#574500",
+                "surface-container-highest": "#343533",
+                "on-secondary-fixed": "#161e07",
+                "surface-dim": "#131412",
+                "primary-fixed-dim": "#f4ba9c",
+                "surface-container": "#1f201e"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+        },
+        "spacing": {
+            "margin-mobile": "16px",
+            "sm": "12px",
+            "lg": "48px",
+            "md": "24px",
+            "margin-desktop": "64px",
+            "xl": "80px",
+            "base": "8px",
+            "gutter": "24px",
+            "xs": "4px"
+        },
+        "fontFamily": {
+                "headline": [
+                        "Libre Caslon Text"
+                ],
+                "display": [
+                        "Libre Caslon Text"
+                ],
+                "body": [
+                        "Atkinson Hyperlegible Next"
+                ],
+                "label": [
+                        "Atkinson Hyperlegible Next"
+                ],
+                "headline-lg": ["Libre Caslon Text"],
+                "label-md": ["Atkinson Hyperlegible Next"],
+                "headline-lg-mobile": ["Libre Caslon Text"],
+                "body-md": ["Atkinson Hyperlegible Next"],
+                "headline-md": ["Libre Caslon Text"],
+                "body-lg": ["Atkinson Hyperlegible Next"],
+                "headline-xl": ["Libre Caslon Text"],
+                "caption": ["Atkinson Hyperlegible Next"]
+        },
+        "fontSize": {
+            "headline-lg": ["32px", { lineHeight: "40px", fontWeight: "600" }],
+            "label-md": ["14px", { lineHeight: "20px", letterSpacing: "0.02em", fontWeight: "600" }],
+            "headline-lg-mobile": ["28px", { lineHeight: "36px", fontWeight: "600" }],
+            "body-md": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+            "headline-md": ["24px", { lineHeight: "32px", fontWeight: "600" }],
+            "body-lg": ["18px", { lineHeight: "28px", fontWeight: "400" }],
+            "headline-xl": ["48px", { lineHeight: "56px", fontWeight: "700" }],
+            "caption": ["12px", { lineHeight: "16px", fontWeight: "400" }]
+        }
+},
+    },
+  }
+</script>
+<style>
+        body { background-color: #fdfcfb; color: #1b1c1a; }
+        .organic-shape-1 {
+            border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+            animation: morph 8s ease-in-out infinite;
+        }
+        @keyframes morph {
+            0% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+            50% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+            100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0px 4px 20px rgba(62, 47, 40, 0.04);
+        }
+    </style>
+</head>
+<body class="bg-[#fdfcfb] text-[#1b1c1a] font-body-md antialiased overflow-x-hidden selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-[#fdfcfb]/90 backdrop-blur-md shadow-sm transition-all duration-300 ease-in-out">
+<div class="flex justify-between items-center px-margin-desktop h-20 w-full max-w-7xl mx-auto">
+<div class="font-headline-md text-headline-md font-semibold text-[#1b1c1a] tracking-tight">
+                Diversamente
+            </div>
+<div class="hidden md:flex items-center gap-md">
+<a class="font-label-md text-label-md text-[#1b1c1a] border-b-2 border-[#1b1c1a] pb-1 font-bold" href="#">Inicio</a>
+<a class="font-label-md text-label-md text-[#1b1c1a]/80 hover:text-[#1b1c1a] transition-colors transition-all duration-300 ease-in-out hover:opacity-80" href="#">Sobre nosotros</a>
+<a class="font-label-md text-label-md text-[#1b1c1a]/80 hover:text-[#1b1c1a] transition-colors transition-all duration-300 ease-in-out hover:opacity-80" href="#">Programas</a>
+<a class="font-label-md text-label-md text-[#1b1c1a]/80 hover:text-[#1b1c1a] transition-colors transition-all duration-300 ease-in-out hover:opacity-80" href="#">Recursos</a>
+<a class="font-label-md text-label-md text-[#1b1c1a]/80 hover:text-[#1b1c1a] transition-colors transition-all duration-300 ease-in-out hover:opacity-80" href="#">Contacto</a>
+</div>
+<div>
+<button class="bg-primary text-on-primary font-label-md text-label-md px-md py-sm rounded-lg hover:opacity-90 transition-opacity transition-all duration-300 ease-in-out hover:scale-105 hover:brightness-110 active:scale-95">Donar ahora</button>
+</div>
+</div>
+</nav>
+<main class="pt-24 pb-xl px-margin-mobile md:px-margin-desktop max-w-7xl mx-auto flex flex-col gap-xl">
+<!-- Hero Section -->
+<section class="relative flex flex-col md:flex-row items-center justify-between min-h-[70vh] gap-lg">
+<div class="absolute inset-0 z-[-1] overflow-hidden opacity-30 pointer-events-none">
+<div class="absolute top-10 left-10 w-[500px] h-[500px] bg-secondary-container rounded-full blur-3xl mix-blend-multiply"></div>
+<div class="absolute bottom-10 right-10 w-[400px] h-[400px] bg-primary-container rounded-full blur-3xl mix-blend-multiply opacity-50"></div>
+</div>
+<div class="w-full md:w-1/2 flex flex-col items-start gap-md z-10">
+<span class="inline-flex items-center px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container font-label-md text-label-md gap-2">
+<span class="material-symbols-outlined" style="font-size: 16px;">psychology</span>
+                    Apoyo y Acompañamiento
+                </span>
+<h1 class="font-headline-xl text-headline-xl text-[#1b1c1a] text-balance">
+                    Amar, aceptar y avanzar <span class="text-primary italic">juntos</span>
+</h1>
+<p class="font-body-lg text-body-lg text-[#1b1c1a]/80 max-w-lg mt-sm">
+                    Brindando espacios de contención y herramientas prácticas, elocuentes y efectivas para aceptar, comprender y acompañar la neurodiversidad con empatía, profesionalismo y calidez humana.
+                </p>
+<div class="flex gap-4 mt-md">
+<button class="bg-primary text-on-primary font-label-md text-label-md px-md py-sm rounded-lg hover:opacity-90 transition-opacity shadow-sm transition-all duration-300 ease-in-out hover:scale-105 hover:brightness-110 active:scale-95">
+                        Conoce más
+                    </button>
+<button class="border border-secondary text-secondary font-label-md text-label-md px-md py-sm rounded-lg hover:bg-secondary-container/20 transition-colors transition-all duration-300 ease-in-out hover:scale-105 active:scale-95">
+                        Nuestros Programas
+                    </button>
+</div>
+</div>
+<div class="w-full md:w-1/2 flex justify-center items-center z-10">
+<div class="relative w-full max-w-[500px] aspect-square flex items-center justify-center">
+<div class="absolute inset-0 bg-[#f5f3f0] organic-shape-1 opacity-80 z-0"></div>
+<img alt="Diversamente Logo" class="relative z-10 w-[80%] h-auto object-contain drop-shadow-md" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDBcZuIis-sb9UIOfFY3ZCUTe2_xqa3yn-AOE_VVPTxCRmssXFXc0kBwm5ATanxOrytO7jfE3B6beGoHPvzsDCsuE1q093eYYO9v0mEPivvR1C8DUE3Fz940DfSLH_YUXIRDZQxcYt39FwaRpg9xHYBzAwp46Jw4xv4Y2lTtFkjmP8Og_apWf8b0u_FdPkcvCl7AmqHd3gipVEVKCesi33jVrXPaIiRpeRt1z16qoO6DQ2yQM925VLk0Jzo5uEoYChcYd4"/>
+</div>
+</div>
+</section>
+<!-- Nuestra Misión -->
+<section class="flex flex-col items-center gap-lg py-xl relative">
+<div class="text-center"><div class="flex justify-center mb-4"><div class="w-24 h-24 overflow-hidden rounded-full bg-[#f5f3f0] flex items-center justify-center shadow-sm border border-surface-variant"><img alt="Diversamente Comunidad Logo" class="w-full h-full object-contain p-2" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4Zf1yat7mERTA0_Hukov5g6NTZqRaGENfy2lgK5fjfcpoZ-Eln7dOXDrTOCDFBdWqDujoJ2RXjvsmKEAJinBYcKEQ5i1om7i0n2WMzLfT0nAt-lVtixwBZ_F-vux4vrm52FXxhqlnT6JMQFQ-SCbVLwDBdyO_zK6bcv0gz0Mp8Smq1ZSJJysV0MD1HXq72j-0F5fDrBWmw7aSn-2WOqhBJcsXQ3L05Mw2agjV5P8kw1mZd6XC4tritlLPoTfZ4Tj1Hmo"/></div></div>
+<span class="font-label-md text-label-md text-primary uppercase tracking-widest">Nuestra Misión</span>
+<h2 class="font-headline-lg text-headline-lg text-[#1b1c1a] mt-2">Conoce nuestro impacto</h2>
+</div>
+<div class="w-full max-w-4xl mx-auto">
+<div class="relative aspect-video w-full overflow-hidden rounded-xl shadow-sm border border-surface-variant">
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" class="absolute inset-0 w-full h-full" frameborder="0" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Diversamente Presentation Video">
+</iframe>
+</div>
+</div>
+<p class="font-body-lg text-body-lg text-[#1b1c1a]/80 max-w-3xl text-center text-balance">
+        Brindamos un acompañamiento integral y respetuoso a familias y personas neurodivergentes, transformando vidas a través de la comprensión y el apoyo profesional.
+    </p>
+</section>
+<!-- Programas Destacados (Bento Grid) -->
+<section class="flex flex-col gap-lg">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-lg md:font-headline-lg text-headline-lg text-[#1b1c1a]">Programas Destacados</h2>
+<a class="font-label-md text-label-md text-primary flex items-center gap-1 hover:underline decoration-tertiary" href="#">
+                    Ver todos <span class="material-symbols-outlined" style="font-size: 18px;">arrow_forward</span>
+</a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Main Card -->
+<div class="md:col-span-2 glass-panel rounded-xl p-md flex flex-col justify-end min-h-[300px] relative overflow-hidden group">
+<div class="absolute inset-0 bg-cover bg-center z-0 transition-transform duration-700 group-hover:scale-105 opacity-80" data-alt="A serene group therapy setting in a bright, modern room with large windows, soft beige and terracotta tones, cozy armchairs arranged in a circle, bathed in natural morning light, conveying safety, empathy, and professional care." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA0UoMgbm-L0B3fFm-nS_6cVmmOjbtSWe6hYQI3Q49E9TNd67GxcLDX1pJ_MCdRTxjLpgbMZ6plowwVV2lIMqhOCTYGkx8cLFyshdWD7snWaD9jed3ouhavSOk6wr_6CaWqPXeexD1fG54d7v6Q9PmXoZtin9Yq6uaLeTtuh9GPCOa7shCTHxYN6HAdtgP_5giZE2FVvxd1d-nXXFmE2jad4ZYgiQB_eZNuMcygJGQaanth7EJ51iSJhA')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-tint/90 to-transparent z-10"></div>
+<div class="relative z-20 text-on-primary">
+<span class="inline-block px-3 py-1 bg-[#f5f3f0]/20 backdrop-blur-sm rounded-full font-caption text-caption mb-2">Acompañamiento Familiar</span>
+<h3 class="font-headline-md text-headline-md mb-2">Redes de Apoyo</h3>
+<p class="font-body-md text-body-md text-on-primary/90 max-w-md">Grupos guiados por especialistas para compartir experiencias y construir herramientas conjuntas en un ambiente de total confianza.</p>
+</div>
+</div>
+<!-- Secondary Card 1 -->
+<div class="glass-panel rounded-xl p-md flex flex-col gap-sm relative overflow-hidden bg-[#f5f3f0]">
+<div class="w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center text-secondary mb-2">
+<span class="material-symbols-outlined" style="font-size: 24px;">psychiatry</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-[#1b1c1a]">Terapia Individual</h3>
+<p class="font-body-md text-body-md text-[#1b1c1a]/80 flex-grow">Sesiones personalizadas enfocadas en el desarrollo de la autonomía y el bienestar emocional de Padres y Cuidadores.</p>
+<a class="font-label-md text-label-md text-primary mt-auto flex items-center gap-1 w-fit" href="#">
+                        Saber más <span class="material-symbols-outlined" style="font-size: 16px;">chevron_right</span>
+</a>
+</div>
+<!-- Secondary Card 2 -->
+<div class="glass-panel rounded-xl p-md flex flex-col gap-sm relative overflow-hidden bg-[#f5f3f0]">
+<div class="w-12 h-12 rounded-full bg-tertiary-container flex items-center justify-center text-on-tertiary-container mb-2">
+<span class="material-symbols-outlined" style="font-size: 24px;">school</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-[#1b1c1a]">Talleres Educativos</h3>
+<p class="font-body-md text-body-md text-[#1b1c1a]/80 flex-grow">Capacitaciones para profesionales e instituciones buscando fomentar la inclusión real y el proceso de duelo ante un diagnostico.</p>
+<a class="font-label-md text-label-md text-primary mt-auto flex items-center gap-1 w-fit" href="#">
+                        Saber más <span class="material-symbols-outlined" style="font-size: 16px;">chevron_right</span>
+</a>
+</div>
+</div>
+</section>
+<!-- Testimonial Section -->
+<section class="py-xl my-lg relative">
+<div class="absolute inset-0 bg-[#f5f3f0]/50 rounded-[2rem] -z-10"></div>
+<div class="flex flex-col items-center text-center px-md py-lg">
+<span class="material-symbols-outlined text-primary mb-4" style="font-size: 48px; font-variation-settings: 'FILL' 1;">format_quote</span>
+<p class="font-headline-md text-headline-md text-[#1b1c1a] max-w-4xl text-balance italic mb-6">
+                    "Encontrar este espacio cambió la dinámica de nuestra casa. Nos sentimos escuchados, comprendidos y, sobre todo, dejamos de sentirnos solos. El abordaje humano y profesional nos dio la paz que necesitábamos para avanzar."
+                 </p>
+<div class="flex items-center gap-4 mt-4">
+<img class="w-14 h-14 rounded-full object-cover shadow-sm border-2 border-surface" data-alt="A portrait of a warm, smiling middle-aged woman with gentle features, soft natural lighting, set against a neutral, calming beige background, exuding a sense of relief, gratitude, and hope. Modern light mode aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBOKtbcAm0nPeRnuwoJEFY8L_ufx9JUlQ4vwpxgfbbGUBPtIQRfXEghGZ_P0k7a4H5SrqNWGpJ_ZNRslMrhnpSYM9XobtrLxdOHQ4jL73Vv3G7NUJBjek3hfmoehDXb9mv9Ydf7JbMQCrH6r8PyecUFCVeuWSZSWPFJianuuDqWb9scc_UDpONL_cQLoQ1vLKBIa5avLXlFHL4sh5Fqy1Hin7ikNB8lC7d2CWU_KRUJAtYNIIJM1yFpOg"/>
+<div class="text-left">
+<p class="font-label-md text-label-md text-[#1b1c1a]">Familia Martínez</p>
+<p class="font-caption text-caption text-[#1b1c1a]/80">Participantes del Programa de Redes</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-xl mt-xl bg-[#f5f3f0] flex flex-col items-center gap-md px-margin-desktop w-full text-center">
+<div class="font-headline-md text-headline-md font-semibold text-[#1b1c1a]">
+            Diversamente
+        </div>
+<div class="flex flex-wrap justify-center gap-md">
+<a class="font-body-md text-body-md text-[#1b1c1a]/80 hover:text-[#1b1c1a] underline decoration-tertiary opacity-90 hover:opacity-100 transition-opacity transition-all duration-300 ease-in-out hover:scale-105" href="#">Política de privacidad</a>
+<a class="font-body-md text-body-md text-[#1b1c1a]/80 hover:text-[#1b1c1a] underline decoration-tertiary opacity-90 hover:opacity-100 transition-opacity transition-all duration-300 ease-in-out hover:scale-105" href="#">Términos de servicio</a>
+<a class="font-body-md text-body-md text-[#1b1c1a]/80 hover:text-[#1b1c1a] underline decoration-tertiary opacity-90 hover:opacity-100 transition-opacity transition-all duration-300 ease-in-out hover:scale-105" href="#">Voluntariado</a>
+<a class="font-body-md text-body-md text-[#1b1c1a]/80 hover:text-[#1b1c1a] underline decoration-tertiary opacity-90 hover:opacity-100 transition-opacity transition-all duration-300 ease-in-out hover:scale-105" href="#">Nuestro impacto</a>
+</div>
+<div class="font-caption text-caption text-[#1b1c1a]/60 mt-sm">
+            © 2024 Diversamente - Amar, aceptar y avanzar juntos. Todos los derechos reservados.
+        </div>
+</footer>
+</body></html>

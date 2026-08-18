@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es" style=""><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sobre Nosotros | Diversamente</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&amp;family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary-container": "#ffe4d7",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary-fixed": "#241a00",
+                    "surface-container-low": "#f5f3f0",
+                    "primary-fixed-dim": "#f4ba9c",
+                    "outline-variant": "#d5c3ba",
+                    "tertiary-fixed": "#ffe088",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "inverse-on-surface": "#f2f0ed",
+                    "surface-dim": "#dbdad6",
+                    "on-secondary-fixed": "#161e07",
+                    "surface-tint": "#80543c",
+                    "inverse-primary": "#f4ba9c",
+                    "on-secondary-container": "#5e684a",
+                    "secondary": "#586244",
+                    "surface-variant": "#e4e2de",
+                    "secondary-container": "#dce7c1",
+                    "on-tertiary-fixed-variant": "#574500",
+                    "surface-container-high": "#eae8e4",
+                    "on-primary": "#ffffff",
+                    "tertiary-container": "#cca72f",
+                    "on-primary-fixed": "#311302",
+                    "error-container": "#ffdad6",
+                    "on-tertiary-container": "#4e3d00",
+                    "secondary-fixed-dim": "#c0cba7",
+                    "on-secondary-fixed-variant": "#414a2e",
+                    "on-surface-variant": "#51443e",
+                    "error": "#ba1a1a",
+                    "secondary-fixed": "#dce7c1",
+                    "tertiary-fixed-dim": "#e9c349",
+                    "inverse-surface": "#30312e",
+                    "primary-container": "#8c5e45",
+                    "on-surface": "#1b1c1a",
+                    "tertiary": "#735c00",
+                    "primary-fixed": "#ffdbca",
+                    "on-error": "#ffffff",
+                    "surface": "#fdfcfb",
+                    "background": "#fdfcfb",
+                    "on-error-container": "#93000a",
+                    "surface-container": "#f5f3f0",
+                    "on-background": "#1b1c1a",
+                    "surface-bright": "#fdfcfb",
+                    "outline": "#83746d",
+                    "surface-container-highest": "#e4e2de",
+                    "on-primary-fixed-variant": "#653d26",
+                    "primary": "#71472f"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-mobile": "16px",
+                    "sm": "12px",
+                    "lg": "48px",
+                    "md": "24px",
+                    "margin-desktop": "64px",
+                    "xl": "80px",
+                    "base": "8px",
+                    "gutter": "24px",
+                    "xs": "4px"
+            },
+            "fontFamily": {
+                    "headline-lg": [
+                            "Libre Caslon Text"
+                    ],
+                    "label-md": [
+                            "Atkinson Hyperlegible Next"
+                    ],
+                    "headline-lg-mobile": [
+                            "Libre Caslon Text"
+                    ],
+                    "body-md": [
+                            "Atkinson Hyperlegible Next"
+                    ],
+                    "headline-md": [
+                            "Libre Caslon Text"
+                    ],
+                    "body-lg": [
+                            "Atkinson Hyperlegible Next"
+                    ],
+                    "headline-xl": [
+                            "Libre Caslon Text"
+                    ],
+                    "caption": [
+                            "Atkinson Hyperlegible Next"
+                    ]
+            },
+            "fontSize": {
+                    "headline-lg": [
+                            "32px",
+                            {
+                                    "lineHeight": "40px",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "label-md": [
+                            "14px",
+                            {
+                                    "lineHeight": "20px",
+                                    "letterSpacing": "0.02em",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "headline-lg-mobile": [
+                            "28px",
+                            {
+                                    "lineHeight": "36px",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "body-md": [
+                            "16px",
+                            {
+                                    "lineHeight": "24px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "headline-md": [
+                            "24px",
+                            {
+                                    "lineHeight": "32px",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "body-lg": [
+                            "18px",
+                            {
+                                    "lineHeight": "28px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "headline-xl": [
+                            "48px",
+                            {
+                                    "lineHeight": "56px",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "caption": [
+                            "12px",
+                            {
+                                    "lineHeight": "16px",
+                                    "fontWeight": "400"
+                            }
+                    ]
+            }
+    },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: theme('colors.background');
+            color: theme('colors.on-background');
+        }
+        
+        /* Subtle ambient shadow for elevated elements */
+        .ambient-shadow-lvl1 {
+            box-shadow: 0px 4px 20px rgba(62, 47, 40, 0.04);
+        }
+        
+        .ambient-shadow-lvl2 {
+            box-shadow: 0px 12px 32px rgba(140, 94, 69, 0.08);
+        }
+    </style>
+</head>
+<body class="antialiased flex flex-col min-h-screen">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-md shadow-sm dark:shadow-none transition-all duration-300 ease-in-out">
+<div class="flex justify-between items-center px-margin-mobile md:px-margin-desktop h-20 w-full max-w-7xl mx-auto">
+<!-- Brand Logo -->
+<a class="font-headline-md text-headline-md font-semibold text-primary dark:text-primary-fixed-dim tracking-tight" href="#">
+                Diversamente
+            </a>
+<!-- Navigation Links (Desktop) -->
+<nav class="hidden md:flex gap-md items-center">
+<a class="font-label-md text-label-md text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors hover:opacity-80 hover:opacity-100 active:opacity-70 transition-all duration-300" href="#">Inicio</a>
+<a class="font-label-md text-label-md text-primary dark:text-primary-fixed-dim border-b-2 border-primary dark:border-primary-fixed-dim pb-1 font-bold hover:opacity-100 active:opacity-70 transition-all duration-300" href="#">Sobre Nosotros</a>
+<a class="font-label-md text-label-md text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors hover:opacity-80 hover:opacity-100 active:opacity-70 transition-all duration-300" href="#">Programas</a>
+<a class="font-label-md text-label-md text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors hover:opacity-80 hover:opacity-100 active:opacity-70 transition-all duration-300" href="#">Recursos</a>
+<a class="font-label-md text-label-md text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors hover:opacity-80 hover:opacity-100 active:opacity-70 transition-all duration-300" href="#">Contacto</a>
+</nav>
+<!-- Trailing Action -->
+<div class="hidden md:block">
+<button class="bg-primary text-on-primary font-label-md text-label-md px-md py-sm rounded-lg hover:bg-primary/90 transition-colors hover:opacity-100 active:scale-95 transition-all duration-300">
+                    Donar Ahora
+                </button>
+</div>
+<!-- Mobile Menu Toggle -->
+<button aria-label="Open Menu" class="md:hidden text-primary p-xs hover:opacity-80 active:scale-90 transition-all duration-300">
+<span class="material-symbols-outlined" style='font-variation-settings: "FILL" 0;'>menu</span>
+</button>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-grow pt-32 pb-xl px-margin-mobile md:px-margin-desktop max-w-7xl mx-auto w-full">
+<!-- Hero Section -->
+<section class="mb-xl text-center md:text-left flex flex-col md:flex-row items-center gap-xl">
+<div class="md:w-1/2 flex flex-col gap-md">
+<h1 class="font-headline-xl text-headline-xl text-primary mb-sm">Amar, aceptar y avanzar juntos.</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">
+                    En Diversamente, creemos que el verdadero crecimiento ocurre cuando creamos espacios de profunda aceptación. Nuestro viaje está dedicado a apoyar a familias e individuos a través del crecimiento nutrido, la comprensión y la resiliencia compartida.
+                </p>
+</div>
+<div class="md:w-1/2 w-full aspect-square md:aspect-[4/3] rounded-2xl overflow-hidden ambient-shadow-lvl1">
+<img class="w-full h-full object-cover" data-alt="A warm, soft-focus photograph capturing a diverse family embracing outdoors in a sunlit park. The lighting is golden hour, casting gentle, hopeful rays. The aesthetic is modern, natural, and deeply human, with an emphasis on soft earth tones, subtle greens, and a feeling of unconditional love and acceptance. High quality, editorial style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCNkiVivC-BJEDIS5_LebPoMUechKRKR-VdLpBhvMMdIxblT7FySy7zG1Bohmmjs-23jnIgzdVC_JonaRl9ukLVfJya_Qm2FUnX2esA-KbgktEmWubOt6XmTGf5CZ5u6yuNyN4tJVH0zuwLRkp9GLisu-u6JN0e3qtKR1lFlRjbWaquPikTbNceYWttGr1WXrAOARjXShLCLUHq2bZJsVUWYCkk7V5CSiPzpr9ktpYMkU5RCNWiY8mxKg"/>
+</div>
+</section>
+<!-- Our Story Section (Bento Grid Style) -->
+<section class="mb-xl">
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary text-center mb-lg">Nuestra Historia</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-md">
+<!-- Large Card -->
+<div class="md:col-span-2 bg-surface-container-low rounded-2xl p-lg flex flex-col justify-center ambient-shadow-lvl1">
+<h3 class="font-headline-md text-headline-md text-primary-container mb-sm">Una Semilla Plantada en Compasión</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">
+                        Diversamente comenzó con una simple pero profunda comprensión: navegar por la neurodiversidad y caminos de vida únicos requiere más que solo apoyo clínico; demanda una comunidad arraigada en una aceptación profunda e inquebrantable. Fundada por un colectivo de padres y profesionales que experimentaron el profundo aislamiento que puede acompañar estos viajes, nuestra organización fue construida para ser el santuario que una vez buscaron. Enfatizamos la calidez táctil y la seguridad emocional, asegurando que cada interacción se sienta intencional y amable.
+                    </p>
+</div>
+<!-- Image Card -->
+<div class="bg-surface-container rounded-2xl overflow-hidden ambient-shadow-lvl1 aspect-square md:aspect-auto">
+<img class="w-full h-full object-cover" data-alt="A close-up, highly detailed photograph of two hands gently holding a small, vibrant green seedling emerging from rich soil. The image should evoke feelings of nurturing, new beginnings, and delicate growth. The lighting is soft and natural, emphasizing the texture of the soil and the fragility of the plant. Earth tones dominate the palette, aligning with a warm, organic design system." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDUdC3OPaLg_8XvkdMGSBWFOphB8nqaTq6FNB_WXA9oQX3jlWpIMpVm4Exf_x0mBNCX7MvCmXepBVoNkD6HMm7d7zGsiK5JIHNw2-wJNMZ3Wt7akpVH2eZOdRc-pQbcmIKqLlnesyuBYbKZ61E3XtJ9zpNU2F2w6ddLTsRzyjtdl0mV2cZLofBL0_wRSmhSUXYxLKmKsTuIpYpUWlDfI99yZDflmU1z14obOibTd-uqtcPJKsMas8NBfw"/>
+</div>
+<!-- Small Card 1 -->
+<div class="bg-secondary-container rounded-2xl p-md flex flex-col justify-between ambient-shadow-lvl1">
+<span class="material-symbols-outlined text-secondary text-4xl mb-sm" style='font-variation-settings: "FILL" 0;'>psychology</span>
+<h4 class="font-headline-md text-headline-md text-on-secondary-container mb-xs">Claridad</h4>
+<p class="font-body-md text-body-md text-on-secondary-container/80">Proporcionando caminos claros a través de desafíos complejos.</p>
+</div>
+<!-- Small Card 2 -->
+<div class="bg-tertiary-container rounded-2xl p-md flex flex-col justify-between ambient-shadow-lvl1">
+<span class="material-symbols-outlined text-on-tertiary-container text-4xl mb-sm" style='font-variation-settings: "FILL" 0;'>diversity_1</span>
+<h4 class="font-headline-md text-headline-md text-on-tertiary-container mb-xs">Pertenencia</h4>
+<p class="font-body-md text-body-md text-on-tertiary-container/80">Fomentando espacios donde todos son intrínsecamente valorados.</p>
+</div>
+<!-- Small Card 3 -->
+<div class="bg-primary-container rounded-2xl p-md flex flex-col justify-between ambient-shadow-lvl1">
+<span class="material-symbols-outlined text-on-primary-container text-4xl mb-sm" style='font-variation-settings: "FILL" 0;'>escalator_warning</span>
+<h4 class="font-headline-md text-headline-md text-on-primary-container mb-xs">Apoyo</h4>
+<p class="font-body-md text-body-md text-on-primary-container/80">Empoderando a las familias con orientación tangible y empática.</p>
+</div>
+</div>
+</section>
+<!-- Philosophy Section -->
+<section class="mb-xl bg-surface-container-low rounded-3xl p-lg md:p-xl text-center ambient-shadow-lvl1">
+<div class="w-32 h-32 mx-auto mb-md overflow-hidden rounded-full ambient-shadow-lvl1 bg-white flex items-center justify-center"><img alt="Aceptación Logo" class="w-full h-full object-contain p-2" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBIN9Xm_IrpRNizzY9AwYi34cFfWRRVeUMGOeJZgfIikLeb216rEs1dSTz4dSMfb6pwvoVjbHN6gFG0j_oizU7Ll_xbOFzqoosBhCXLk7xdVOQl5VtMyjkrHv0vc8n3pb3NeQhDGaTZA3l3vDG_lgW-yKZHjF1leNSk6W1cohsQbf9YChg3MVWJ_UVGyRkj25bu-BOy567DaRg78i70gB4ncKYL_UgS2MSJV2xS-aijMKQXK6QUoXYClOFKKJ0r6sKYxjg"/></div>
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-md">La Filosofía del Crecimiento Nutrido</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-3xl mx-auto">
+                Rechazamos los bordes afilados y las transiciones agresivas en la vida y en nuestro apoyo. Nuestro enfoque centrado en lo humano significa que escuchamos antes de guiar, y aceptamos antes de actuar. El progreso no es lineal; es un despliegue orgánico que requiere un espacio seguro e iluminado por el sol para prosperar.
+            </p>
+</section>
+<!-- Meet the Team Section -->
+<section>
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary text-center mb-lg">Conoce a Nuestros Guías</h2>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-gutter md:grid-cols-3 justify-center">
+<!-- Team Member 1 -->
+<div class="flex flex-col items-center group">
+<div class="w-48 h-48 rounded-full overflow-hidden mb-sm ambient-shadow-lvl1 border-4 border-surface group-hover:border-primary-fixed-dim transition-colors duration-300">
+<img class="w-full h-full object-cover" data-alt="A professional yet warm portrait of a smiling woman in her 40s. She has kind eyes and is wearing a soft, natural-toned linen shirt. The background is softly blurred with hints of greenery and natural light. The lighting is flattering and gentle, conveying trustworthiness and empathy. Earth tone color palette." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1hKfIJcVsliwR_JY6eiYkJOKqQ_cnnibzuWt9EMQa-7nAi9-fqR3vx6ewpMc8A1XdmqsC5_PClQ8JsXgmPgIj7fzVwxyGtwfoQQnPmTUlTZ5OQju0xwa2rkuYneIAywugm7RVFkk8Gela9enXFjSU-X-spGekfaYYqwGGbJB_RWGbLxQk0nMqYfEuNaNGNtOq9VZc9yn0kKEIqBV8s_jmU2uzwq1HNb-DAqbqvnQXnA40OBx0vqC5-A"/>
+</div>
+<h3 class="font-headline-md text-headline-md text-primary text-center">Elena Silva</h3>
+<p class="font-label-md text-label-md text-secondary text-center uppercase tracking-wider mt-xs">Fundadora y Terapeuta Principal</p>
+</div>
+<!-- Team Member 2 -->
+<div class="flex flex-col items-center group">
+<div class="w-48 h-48 rounded-full overflow-hidden mb-sm ambient-shadow-lvl1 border-4 border-surface group-hover:border-primary-fixed-dim transition-colors duration-300">
+<img class="w-full h-full object-cover" data-alt="A warm, approachable portrait of a man in his 30s with glasses and a gentle smile. He is wearing a comfortable, textured sage green sweater. The background is a brightly lit, minimalist office setting with soft focus. The lighting highlights his welcoming expression. Natural and authentic aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAumaX620_JGlDhA_iyWMS3agZZ0BbwVID10M63e8nhcYZvc3iocs6q1B8hO3tNzM5ytVaFx2ZRp2YD1WmdDpnupjo6VLZ7NV-uxyV8FjmCWm2dPC4ZGB3WgqBcIdiRqfzzj6NB2J85WzJNIEbK22SG1HeDXT42-JP9Zaw6ya3QCBijD2CdZ9xa21oGRR47oTQ7LBk7SiXFsh-urfmjQHubZUMUi8qvmw-IDH-FNqNaeTwaeXn4lU-VCA"/>
+</div>
+<h3 class="font-headline-md text-headline-md text-primary text-center">David Chen</h3>
+<p class="font-label-md text-label-md text-secondary text-center uppercase tracking-wider mt-xs">Director Comunitario</p>
+</div>
+<!-- Team Member 3 -->
+<div class="flex flex-col items-center group">
+<div class="w-48 h-48 rounded-full overflow-hidden mb-sm ambient-shadow-lvl1 border-4 border-surface group-hover:border-primary-fixed-dim transition-colors duration-300">
+<img class="w-full h-full object-cover" data-alt="A vibrant, soft-focus portrait of a young woman laughing gently. She wears a terracotta-colored blouse that harmonizes with the brand's palette. The background features subtle, abstract organic shapes in warm cream tones. The lighting is luminous and uplifting, reflecting a spirit of joy and acceptance." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzOhBiAemWSfL_Ch6-QJlIxNkZOJCQICH5LFydMHG-kqh7jPBeg-yR9xq-dc6GXRitg5X_BZaXySEW2Y8CCUfR3JhR5SDHEiG_QB3F_CkTUakwuAJXFoD6GYCSdwIGSIbxOu7HqfGDGmNajF-uWN0fKPkUZ2wCkvyLB10gJzx3NxLgXYV6rAaCv9a09q8kJHiQl0bjxl63i8PkNvhKbSAhdNP4Kl8is6Xz0377EQs7UiSbinbB7Uowfw"/>
+</div>
+<h3 class="font-headline-md text-headline-md text-primary text-center">Maria Torres</h3>
+<p class="font-label-md text-label-md text-secondary text-center uppercase tracking-wider mt-xs">Enlace Familiar</p>
+</div>
+<!-- Team Member 4 -->
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-xl mt-xl bg-surface-container-low dark:bg-surface-container-lowest flex flex-col items-center gap-md px-margin-mobile md:px-margin-desktop text-center">
+<!-- Brand Logo -->
+<div class="font-headline-md text-headline-md font-semibold text-primary dark:text-primary-fixed-dim mb-sm">
+            Diversamente
+        </div>
+<!-- Navigation Links -->
+<nav class="flex flex-wrap justify-center gap-md">
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim underline decoration-tertiary opacity-90 hover:opacity-100 transition-opacity active:opacity-70 transition-all duration-300" href="#">Política de Privacidad</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim underline decoration-tertiary opacity-90 hover:opacity-100 transition-opacity active:opacity-70 transition-all duration-300" href="#">Términos de Servicio</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim underline decoration-tertiary opacity-90 hover:opacity-100 transition-opacity active:opacity-70 transition-all duration-300" href="#">Voluntariado</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim underline decoration-tertiary opacity-90 hover:opacity-100 transition-opacity active:opacity-70 transition-all duration-300" href="#">Nuestro Impacto</a>
+</nav>
+<!-- Copyright -->
+<div class="font-caption text-caption text-on-surface-variant/70 mt-md">
+            © 2024 Diversamente - Amar, aceptar y avanzar juntos. Todos los derechos reservados.
+        </div>
+</footer>
+</body></html>
