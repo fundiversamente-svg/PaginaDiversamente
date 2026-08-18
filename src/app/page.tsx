@@ -46,22 +46,22 @@ export default function HomePage() {
                 <span>Apoyo y Acompañamiento Neuroafirmativo</span>
               </span>
 
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-headline font-bold text-on-surface leading-[1.15] text-balance">
+              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-headline font-bold text-on-surface leading-[1.2] text-balance">
                 Amar, aceptar y avanzar{' '}
-                <span className="text-primary italic relative">
+                <span className="text-primary italic relative inline-block">
                   juntos
                   <span className="absolute -bottom-1 left-0 w-full h-1 bg-tertiary/60 rounded-full" />
                 </span>
               </h1>
 
-              <p className="text-base sm:text-lg font-body text-on-surface-variant max-w-xl leading-relaxed">
+              <p className="text-sm sm:text-base lg:text-lg font-body text-on-surface-variant max-w-xl leading-relaxed">
                 Brindamos espacios de contención y herramientas prácticas, elocuentes y efectivas para aceptar, comprender y acompañar la neurodiversidad con empatía, profesionalismo y calidez humana.
               </p>
 
-              <div className="flex flex-wrap items-center gap-4 pt-2">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2 w-full sm:w-auto">
                 <Link
                   href="/programas"
-                  className="inline-flex items-center justify-center gap-2 bg-primary text-on-primary font-label text-sm font-semibold px-6 py-3.5 rounded-xl shadow-ambient-1 hover:opacity-90 hover:scale-[1.02] active:scale-95 transition-all duration-300"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-primary text-on-primary font-label text-sm font-semibold px-6 py-3.5 rounded-xl shadow-ambient-1 hover:opacity-90 active:scale-95 transition-all"
                 >
                   <span>Nuestros Programas</span>
                   <ArrowRight className="w-4 h-4" />
@@ -69,7 +69,7 @@ export default function HomePage() {
 
                 <button
                   onClick={() => setVideoOpen(true)}
-                  className="inline-flex items-center justify-center gap-2 bg-surface-container-low hover:bg-surface-container-high text-on-surface font-label text-sm font-semibold px-5 py-3.5 rounded-xl border border-border transition-all duration-300 active:scale-95"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-surface-container-low hover:bg-surface-container-high text-on-surface font-label text-sm font-semibold px-5 py-3.5 rounded-xl border border-border transition-all active:scale-95"
                 >
                   <Play className="w-4 h-4 text-primary fill-primary/20" />
                   <span>Ver Presentación</span>
