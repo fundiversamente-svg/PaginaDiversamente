@@ -15,6 +15,8 @@ import {
   Quote,
   ChevronRight,
   Smile,
+  Instagram,
+  ExternalLink,
 } from 'lucide-react';
 import VideoModal from '@/components/VideoModal';
 import { PROGRAMS, TESTIMONIALS, IMPACT_STATS } from '@/lib/mockData';
@@ -352,7 +354,68 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 7. CALL TO ACTION (DONAR & VOLUNTARIADO) */}
+      {/* 7. COMUNIDAD INSTAGRAM OFICIAL */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <div className="bg-gradient-to-br from-pink-500/10 via-purple-500/10 to-amber-500/10 rounded-3xl p-8 sm:p-12 border border-pink-500/30 shadow-ambient-1 relative overflow-hidden">
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
+            <div className="max-w-2xl text-center lg:text-left">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-pink-500/15 border border-pink-500/30 text-primary font-label text-xs font-bold mb-4">
+                <Instagram className="w-3.5 h-3.5 text-pink-600 dark:text-pink-400" />
+                <span>Instagram Oficial: @somos_diversamente</span>
+              </div>
+              <h2 className="text-3xl sm:text-4xl font-headline font-bold text-on-surface mb-3">
+                Conéctate con nuestra comunidad digital
+              </h2>
+              <p className="text-sm sm:text-base font-body text-on-surface-variant leading-relaxed mb-6">
+                Comparte experiencias reales, accede a píldoras psicoeducativas semanales, conoce historias inspiradoras y entérate de nuestras convocatorias en vivo antes que nadie.
+              </p>
+
+              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3">
+                <a
+                  href="https://www.instagram.com/somos_diversamente?utm_source=qr&igsi=MWY0YmN6cnI5ODRhZw%3D%3D"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 bg-gradient-to-r from-pink-600 via-rose-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white font-label text-sm font-semibold px-6 py-3.5 rounded-xl shadow-sm hover:scale-[1.02] active:scale-95 transition-all"
+                >
+                  <Instagram className="w-4 h-4" />
+                  <span>Seguir @somos_diversamente</span>
+                  <ExternalLink className="w-3.5 h-3.5 opacity-80" />
+                </a>
+
+                <span className="text-xs font-label text-on-surface-variant font-medium self-center">
+                  +450 familias unidas
+                </span>
+              </div>
+            </div>
+
+            {/* Quick Instagram Highlights Grid */}
+            <div className="grid grid-cols-2 gap-3 w-full lg:w-auto flex-shrink-0">
+              <div className="p-4 bg-surface/80 dark:bg-surface-dim/80 rounded-2xl border border-pink-500/20 shadow-xs flex flex-col gap-1 text-center sm:text-left">
+                <span className="text-lg">💡</span>
+                <span className="font-label font-bold text-xs text-on-surface">Cápsulas Diarias</span>
+                <span className="text-[11px] text-on-surface-variant font-body">Tips de regulación y crianza</span>
+              </div>
+              <div className="p-4 bg-surface/80 dark:bg-surface-dim/80 rounded-2xl border border-purple-500/20 shadow-xs flex flex-col gap-1 text-center sm:text-left">
+                <span className="text-lg">🎙️</span>
+                <span className="font-label font-bold text-xs text-on-surface">En Vivos & Q&A</span>
+                <span className="text-[11px] text-on-surface-variant font-body">Especialistas invitados</span>
+              </div>
+              <div className="p-4 bg-surface/80 dark:bg-surface-dim/80 rounded-2xl border border-amber-500/20 shadow-xs flex flex-col gap-1 text-center sm:text-left">
+                <span className="text-lg">🤝</span>
+                <span className="font-label font-bold text-xs text-on-surface">Historias Reales</span>
+                <span className="text-[11px] text-on-surface-variant font-body">Testimonios de familias</span>
+              </div>
+              <div className="p-4 bg-surface/80 dark:bg-surface-dim/80 rounded-2xl border border-rose-500/20 shadow-xs flex flex-col gap-1 text-center sm:text-left">
+                <span className="text-lg">📅</span>
+                <span className="font-label font-bold text-xs text-on-surface">Talleres & Eventos</span>
+                <span className="text-[11px] text-on-surface-variant font-body">Anuncios y fechas clave</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 8. CALL TO ACTION (DONAR & VOLUNTARIADO) */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="bg-primary-container text-on-primary-container rounded-3xl p-8 sm:p-14 shadow-ambient-2 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8">
           <div className="max-w-xl text-center md:text-left">

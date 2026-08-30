@@ -197,7 +197,7 @@ export default function DonationModule() {
               <div className="p-4 bg-surface-container-low rounded-xl border border-border flex flex-col justify-between gap-2">
                 <div className="flex items-center justify-between">
                   <span className="font-bold text-sm text-primary">Nequi</span>
-                  <span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full font-mono">315 048 8457</span>
+                  <span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full font-mono">318 571 3991</span>
                 </div>
                 <button
                   type="button"
@@ -230,7 +230,7 @@ export default function DonationModule() {
               <div className="p-4 bg-surface-container-low rounded-xl border border-border flex flex-col justify-between gap-2">
                 <div className="flex items-center justify-between">
                   <span className="font-bold text-sm text-primary">Daviplata</span>
-                  <span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full font-mono">315 048 8457</span>
+                  <span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full font-mono">318 571 3991</span>
                 </div>
                 <button
                   type="button"

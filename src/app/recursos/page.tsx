@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo } from 'react';
 import Image from 'next/image';
-import { Search, BookOpen, UserCheck, Phone, MapPin, ExternalLink } from 'lucide-react';
+import { Search, BookOpen, UserCheck, Phone, MapPin, ExternalLink, Instagram } from 'lucide-react';
 import { RESOURCES_LIST } from '@/lib/mockData';
 import ResourceCard from '@/components/ResourceCard';
 
@@ -139,6 +139,34 @@ export default function RecursosPage() {
           {filteredResources.map((res) => (
             <ResourceCard key={res.id} resource={res} />
           ))}
+        </div>
+
+        {/* Instagram Infografías CTA */}
+        <div className="mt-10 p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-amber-500/10 border border-pink-500/30 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-500 via-rose-500 to-purple-600 flex items-center justify-center text-white shadow-xs flex-shrink-0">
+              <Instagram className="w-6 h-6" />
+            </div>
+            <div>
+              <h4 className="text-lg font-headline font-bold text-on-surface">
+                ¿Buscas infografías visuales y resúmenes prácticos?
+              </h4>
+              <p className="text-xs sm:text-sm font-body text-on-surface-variant mt-0.5">
+                En nuestro Instagram <strong className="text-primary font-bold">@somos_diversamente</strong> compartimos carruseles educativos semanales y guías en formato visual.
+              </p>
+            </div>
+          </div>
+
+          <a
+            href="https://www.instagram.com/somos_diversamente?utm_source=qr&igsi=MWY0YmN6cnI5ODRhZw%3D%3D"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white font-label text-xs sm:text-sm font-semibold px-5 py-3 rounded-xl shadow-xs hover:scale-[1.02] active:scale-95 transition-all flex-shrink-0"
+          >
+            <Instagram className="w-4 h-4" />
+            <span>Ver Infografías en Instagram</span>
+            <ExternalLink className="w-3.5 h-3.5 opacity-80" />
+          </a>
         </div>
       </section>
 

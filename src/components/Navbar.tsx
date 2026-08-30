@@ -18,6 +18,7 @@ import {
   FolderHeart,
   MessageCircle,
   ChevronDown,
+  Instagram,
 } from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
 import { useAuth, checkIsAdmin } from '@/context/AuthContext';
@@ -138,6 +139,18 @@ export default function Navbar() {
                   <span>Admin</span>
                 </Link>
               )}
+
+              {/* Official Instagram Link */}
+              <a
+                href="https://www.instagram.com/somos_diversamente?utm_source=qr&igsi=MWY0YmN6cnI5ODRhZw%3D%3D"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-surface-container-low hover:bg-gradient-to-tr hover:from-amber-500/15 hover:via-rose-500/15 hover:to-purple-600/15 text-on-surface-variant hover:text-pink-600 dark:hover:text-pink-400 border border-border flex items-center justify-center transition-all duration-200 shadow-xs group"
+                title="Síguenos en Instagram @somos_diversamente"
+                aria-label="Instagram Oficial @somos_diversamente"
+              >
+                <Instagram className="w-4 h-4 group-hover:scale-110 transition-transform" />
+              </a>
 
               {/* Theme Toggle */}
               <ThemeToggle />
@@ -317,6 +330,29 @@ export default function Navbar() {
                   );
                 })}
               </nav>
+
+              {/* Official Instagram Community Card in Mobile Drawer */}
+              <div className="mt-4 pt-3 border-t border-border/50">
+                <a
+                  href="https://www.instagram.com/somos_diversamente?utm_source=qr&igsi=MWY0YmN6cnI5ODRhZw%3D%3D"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full flex items-center justify-between p-3 rounded-2xl bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-amber-500/10 border border-pink-500/30 text-on-surface font-label font-bold text-xs shadow-xs hover:opacity-95 transition-opacity"
+                >
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-amber-500 via-rose-500 to-purple-600 flex items-center justify-center text-white shadow-xs">
+                      <Instagram className="w-3.5 h-3.5" />
+                    </div>
+                    <div>
+                      <div className="text-primary font-bold text-xs">@somos_diversamente</div>
+                      <div className="text-[10px] text-on-surface-variant font-normal">Comunidad Oficial en Instagram</div>
+                    </div>
+                  </div>
+                  <span className="text-[10px] bg-primary text-on-primary font-bold px-2.5 py-1 rounded-full shadow-xs">
+                    Seguir
+                  </span>
+                </a>
+              </div>
             </div>
 
             {/* Drawer Footer */}

@@ -16,6 +16,7 @@ import {
   CheckCircle2,
   ExternalLink,
   ShieldCheck,
+  Instagram,
 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { supabase, isSupabaseConfigured } from '@/lib/supabaseClient';
@@ -370,6 +371,34 @@ export default function SuscriptoresPortalPage() {
             </div>
           </div>
         ))}
+      </div>
+
+      {/* Instagram Community Banner for Subscribers */}
+      <div className="mt-12 p-8 sm:p-10 rounded-3xl bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-amber-500/10 border border-pink-500/30 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
+        <div className="flex items-center gap-4">
+          <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-amber-500 via-rose-500 to-purple-600 flex items-center justify-center text-white shadow-md flex-shrink-0">
+            <Instagram className="w-7 h-7" />
+          </div>
+          <div>
+            <h4 className="text-xl font-headline font-bold text-on-surface">
+              Acompáñanos en Instagram: @somos_diversamente
+            </h4>
+            <p className="text-xs sm:text-sm font-body text-on-surface-variant mt-1 max-w-xl">
+              Publicamos dinámicas semanales, recordatorios de círculos de apoyo y contenido complementario exclusivo para nuestra comunidad de familias.
+            </p>
+          </div>
+        </div>
+
+        <a
+          href="https://www.instagram.com/somos_diversamente?utm_source=qr&igsi=MWY0YmN6cnI5ODRhZw%3D%3D"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white font-label text-sm font-semibold px-6 py-3.5 rounded-xl shadow-sm hover:scale-[1.02] active:scale-95 transition-all flex-shrink-0"
+        >
+          <Instagram className="w-4 h-4" />
+          <span>Seguir Cuenta Oficial</span>
+          <ExternalLink className="w-3.5 h-3.5 opacity-80" />
+        </a>
       </div>
 
       {/* Video Modal */}

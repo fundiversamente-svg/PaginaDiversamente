@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { Mail, Phone, MapPin, Heart, Send, Lock } from 'lucide-react';
+import { Mail, Phone, MapPin, Heart, Send, Lock, Instagram, MessageCircle } from 'lucide-react';
 import { useToast } from './Toast';
 import { safeInsert } from '@/lib/supabaseClient';
 
@@ -89,6 +89,23 @@ export default function Footer() {
             <p className="text-sm font-body text-on-surface-variant max-w-sm leading-relaxed">
               Alianza de Inclusión Familiar. Brindando espacios de contención y herramientas prácticas para amar, aceptar y avanzar juntos en la neurodiversidad.
             </p>
+
+            {/* Official Instagram Pill */}
+            <div className="pt-1">
+              <a
+                href="https://www.instagram.com/somos_diversamente?utm_source=qr&igsi=MWY0YmN6cnI5ODRhZw%3D%3D"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-3.5 py-2 rounded-full bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-amber-500/10 hover:from-pink-500/20 hover:via-purple-500/20 hover:to-amber-500/20 text-on-surface border border-pink-500/30 transition-all font-label font-bold text-xs shadow-xs group"
+              >
+                <div className="w-5 h-5 rounded-full bg-gradient-to-tr from-amber-500 via-rose-500 to-purple-600 flex items-center justify-center text-white shadow-xs group-hover:scale-110 transition-transform">
+                  <Instagram className="w-3 h-3" />
+                </div>
+                <span className="text-primary font-bold">@somos_diversamente</span>
+                <span className="text-[10px] text-on-surface-variant opacity-70">★ Cuenta Oficial</span>
+              </a>
+            </div>
+
             <div className="flex flex-col gap-2.5 text-sm text-on-surface-variant mt-2 font-body">
               <a
                 href="mailto:fundiversamente@gmail.com"
@@ -175,6 +192,17 @@ export default function Footer() {
                 <Link href="/contacto" className="hover:text-primary transition-colors">Canales de Contacto</Link>
               </li>
               <li>
+                <a
+                  href="https://www.instagram.com/somos_diversamente?utm_source=qr&igsi=MWY0YmN6cnI5ODRhZw%3D%3D"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-primary hover:underline font-medium"
+                >
+                  <Instagram className="w-3.5 h-3.5 text-pink-600 dark:text-pink-400" />
+                  <span>Instagram Oficial</span>
+                </a>
+              </li>
+              <li>
                 <Link href="/admin" className="inline-flex items-center gap-1 text-xs opacity-70 hover:opacity-100 hover:text-primary transition-opacity">
                   <Lock className="w-3 h-3" />
                   <span>Portal Administrativo</span>
@@ -189,10 +217,22 @@ export default function Footer() {
           <p>
             © {new Date().getFullYear()} Diversamente - Alianza de Inclusión Familiar. Todos los derechos reservados.
           </p>
-          <div className="flex items-center gap-1 text-on-surface-variant">
-            <span>Hecho con</span>
-            <Heart className="w-3.5 h-3.5 text-primary fill-current" />
-            <span>para una comunidad neuroinclusiva</span>
+          <div className="flex items-center gap-4 text-on-surface-variant">
+            <a
+              href="https://www.instagram.com/somos_diversamente?utm_source=qr&igsi=MWY0YmN6cnI5ODRhZw%3D%3D"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-primary font-bold hover:underline"
+            >
+              <Instagram className="w-3.5 h-3.5 text-pink-600 dark:text-pink-400" />
+              <span>@somos_diversamente</span>
+            </a>
+            <span>•</span>
+            <div className="flex items-center gap-1">
+              <span>Hecho con</span>
+              <Heart className="w-3.5 h-3.5 text-primary fill-current" />
+              <span>para familias neurodivergentes</span>
+            </div>
           </div>
         </div>
       </div>

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Mail, Phone, MapPin, Clock, MessageSquare, Heart, ShieldAlert } from 'lucide-react';
+import { Mail, Phone, MapPin, Clock, MessageSquare, Heart, Instagram, Sparkles, ExternalLink } from 'lucide-react';
 import ContactForm from '@/components/ContactForm';
 
 export default function ContactoPage() {
@@ -46,6 +46,22 @@ export default function ContactoPage() {
               </li>
 
               <li className="flex items-start gap-3">
+                <Instagram className="w-5 h-5 text-pink-600 dark:text-pink-400 flex-shrink-0 mt-0.5" />
+                <div>
+                  <div className="font-label font-bold text-xs uppercase text-on-surface-variant">Instagram Oficial</div>
+                  <a
+                    href="https://www.instagram.com/somos_diversamente?utm_source=qr&igsi=MWY0YmN6cnI5ODRhZw%3D%3D"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary font-bold hover:underline flex items-center gap-1"
+                  >
+                    <span>@somos_diversamente</span>
+                    <ExternalLink className="w-3 h-3 opacity-70" />
+                  </a>
+                </div>
+              </li>
+
+              <li className="flex items-start gap-3">
                 <Phone className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
                 <div>
                   <div className="font-label font-bold text-xs uppercase text-on-surface-variant">Teléfono / WhatsApp</div>
@@ -75,7 +91,7 @@ export default function ContactoPage() {
             </ul>
 
             {/* Direct WhatsApp CTA */}
-            <div className="mt-6 pt-6 border-t border-border">
+            <div className="mt-6 pt-6 border-t border-border flex flex-col gap-2.5">
               <a
                 href="https://wa.me/573185713991?text=Hola,%20me%20gustar%C3%ADa%20recibir%20informaci%C3%B3n%20sobre%20los%20programas%20de%20Diversamente"
                 target="_blank"
@@ -86,6 +102,31 @@ export default function ContactoPage() {
                 <span>Escribir por WhatsApp</span>
               </a>
             </div>
+          </div>
+
+          {/* Dedicated Instagram Community Card */}
+          <div className="bg-gradient-to-br from-pink-500/10 via-purple-500/10 to-amber-500/10 rounded-2xl p-6 sm:p-7 border border-pink-500/30 shadow-ambient-1 relative overflow-hidden">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 via-rose-500 to-purple-600 flex items-center justify-center text-white shadow-xs">
+                <Instagram className="w-5 h-5" />
+              </div>
+              <div>
+                <h4 className="text-base font-headline font-bold text-on-surface">Comunidad en Instagram</h4>
+                <p className="text-xs text-primary font-bold">@somos_diversamente</p>
+              </div>
+            </div>
+            <p className="text-xs font-body text-on-surface-variant leading-relaxed mb-4">
+              Sigue nuestras cápsulas psicoeducativas, historias diarias, consejos prácticos para padres y anuncios de talleres gratuitos.
+            </p>
+            <a
+              href="https://www.instagram.com/somos_diversamente?utm_source=qr&igsi=MWY0YmN6cnI5ODRhZw%3D%3D"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white font-label text-xs font-semibold py-2.5 rounded-xl shadow-xs transition-all active:scale-95"
+            >
+              <Instagram className="w-4 h-4" />
+              <span>Seguir en Instagram</span>
+            </a>
           </div>
 
           {/* Donate Promo Card */}
@@ -108,14 +149,6 @@ export default function ContactoPage() {
             >
               <span>Hacer una Donación</span>
             </Link>
-          </div>
-
-          {/* Emergency / Crisis Note */}
-          <div className="p-4 bg-surface-container-low rounded-xl border border-border text-xs text-on-surface-variant font-body flex items-start gap-2.5">
-            <ShieldAlert className="w-4 h-4 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
-            <div>
-              <strong className="text-on-surface">Líneas de Contención de Crisis:</strong> Si te encuentras en una situación de emergencia emocional en Colombia, recuerda que puedes comunicarte a la Línea 106 o 192 (apoyo 24/7).
-            </div>
           </div>
         </div>
       </div>
