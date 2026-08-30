@@ -32,6 +32,9 @@ import {
   Check,
   Radio,
   FileText,
+  Eye,
+  MessageSquare,
+  ExternalLink,
 } from 'lucide-react';
 import { supabase, isSupabaseConfigured, safeInsert } from '@/lib/supabaseClient';
 import { useAuth, checkIsAdmin } from '@/context/AuthContext';
@@ -51,6 +54,7 @@ export default function AdminPortalPage() {
   const [isAddAdminModalOpen, setIsAddAdminModalOpen] = useState(false);
   const [isChangePasswordModalOpen, setIsChangePasswordModalOpen] = useState(false);
   const [isNewsletterModalOpen, setIsNewsletterModalOpen] = useState(false);
+  const [viewingDetail, setViewingDetail] = useState<any | null>(null);
 
   // Form state for content creation
   const [formData, setFormData] = useState({
@@ -202,6 +206,57 @@ export default function AdminPortalPage() {
       loadData();
     } else {
       showToast(res.error || 'Error al guardar el contenido', 'error');
+    }
+    setLoading(false);
+  };
+
+  // Delete an individual record from Supabase and local state
+  const handleDeleteItem = async (item: any) => {
+    const itemTitle = item.name || item.full_name || item.title || item.donor_name || item.email || 'este registro';
+    if (!window.confirm(`¿Estás seguro de que deseas eliminar permanentemente a "${itemTitle}"? Esta acción no se puede deshacer.`)) {
+      return;
+    }
+
+    setLoading(true);
+    let tableName = 'contact_messages';
+    if (activeMainTab === 'inbox') {
+      const inboxMap: Record<string, string> = {
+        messages: 'contact_messages',
+        inquiries: 'program_inquiries',
+        volunteers: 'volunteers',
+        donations: 'donations',
+        newsletter_subs: 'newsletter_subscribers',
+      };
+      tableName = inboxMap[activeSubTab] || 'contact_messages';
+    } else if (activeMainTab === 'content') {
+      tableName = activeSubTab === 'resources' ? 'resources' : 'exclusive_content';
+    } else if (activeMainTab === 'newsletters') {
+      tableName = 'newsletters';
+    }
+
+    if (supabase && isSupabaseConfigured && item.id) {
+      try {
+        const { error } = await supabase.from(tableName as any).delete().eq('id', item.id);
+        if (error) {
+          showToast('Error al eliminar en Supabase: ' + error.message, 'error');
+        } else {
+          showToast('Registro eliminado con éxito', 'success');
+        }
+      } catch (err: any) {
+        showToast('Error al eliminar: ' + err.message, 'error');
+      }
+    } else {
+      showToast('Registro eliminado con éxito', 'success');
+    }
+
+    // Remove from local list state and localStorage
+    const updated = dataList.filter((d) => (d.id ? d.id !== item.id : d.email !== item.email));
+    setDataList(updated);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(`diversamente_local_${tableName}`, JSON.stringify(updated));
+    }
+    if (viewingDetail?.id === item.id) {
+      setViewingDetail(null);
     }
     setLoading(false);
   };
@@ -891,41 +946,95 @@ export default function AdminPortalPage() {
                   <th className="px-5 py-3">Tipo / Asunto</th>
                   <th className="px-5 py-3">Detalles / Contenido</th>
                   <th className="px-5 py-3">Estado / Rol</th>
+                  <th className="px-5 py-3 text-right">Acciones</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border/60">
-                {filteredData.map((row) => (
-                  <tr key={row.id || Math.random()} className="hover:bg-surface-container-low/40 transition-colors">
-                    <td className="px-5 py-4 whitespace-nowrap text-on-surface-variant font-mono text-[11px]">
-                      {row.created_at ? new Date(row.created_at).toLocaleDateString('es-CO') : 'Reciente'}
-                    </td>
-                    <td className="px-5 py-4 font-medium text-on-surface">
-                      <div>{row.title || row.name || row.full_name || row.donor_name || row.email || 'Sin nombre'}</div>
-                      <div className="text-[11px] text-on-surface-variant font-mono">{row.email || row.donor_email || row.author}</div>
-                    </td>
-                    <td className="px-5 py-4 text-on-surface">
-                      <span className="inline-block px-2 py-0.5 rounded bg-surface-container-low text-primary font-semibold text-[11px]">
-                        {row.type || row.topic || row.category || row.membership_tier || 'General'}
-                      </span>
-                    </td>
-                    <td className="px-5 py-4 text-on-surface-variant max-w-sm leading-relaxed">
-                      <p className="line-clamp-2">
-                        {row.description || row.message || row.motivation || row.notes || (row.is_active ? 'Suscripción activa al boletín' : 'Sin descripción adicional.')}
-                      </p>
-                      {row.amount && (
-                        <div className="font-bold text-primary text-xs mt-1">
-                          ${parseFloat(row.amount).toLocaleString('es-CO')} {row.currency}
+                {filteredData.map((row) => {
+                  const targetEmail = row.email || row.donor_email;
+                  const targetPhone = row.phone || row.donor_phone;
+
+                  return (
+                    <tr key={row.id || Math.random()} className="hover:bg-surface-container-low/40 transition-colors group">
+                      <td className="px-5 py-4 whitespace-nowrap text-on-surface-variant font-mono text-[11px]">
+                        {row.created_at ? new Date(row.created_at).toLocaleDateString('es-CO') : 'Reciente'}
+                      </td>
+                      <td className="px-5 py-4 font-medium text-on-surface">
+                        <div className="font-semibold text-sm">{row.title || row.name || row.full_name || row.donor_name || row.email || 'Sin nombre'}</div>
+                        <div className="text-[11px] text-on-surface-variant font-mono">{targetEmail || row.author}</div>
+                        {targetPhone && (
+                          <div className="text-[10px] text-secondary font-mono mt-0.5">📞 {targetPhone}</div>
+                        )}
+                      </td>
+                      <td className="px-5 py-4 text-on-surface">
+                        <span className="inline-block px-2.5 py-1 rounded-full bg-surface-container-low text-primary font-semibold text-[11px] border border-border">
+                          {row.type || row.topic || row.category || row.program_name || row.membership_tier || 'General'}
+                        </span>
+                      </td>
+                      <td className="px-5 py-4 text-on-surface-variant max-w-sm leading-relaxed">
+                        <p className="line-clamp-2 text-xs">
+                          {row.description || row.message || row.motivation || row.notes || (row.is_active ? 'Suscripción activa al boletín' : 'Sin descripción adicional.')}
+                        </p>
+                        {row.amount && (
+                          <div className="font-bold text-primary text-xs mt-1">
+                            ${parseFloat(row.amount).toLocaleString('es-CO')} {row.currency}
+                          </div>
+                        )}
+                      </td>
+                      <td className="px-5 py-4 whitespace-nowrap">
+                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-semibold bg-secondary-container text-on-secondary-container">
+                          <CheckCircle className="w-3 h-3" />
+                          <span>{row.role || row.status || (row.is_active !== undefined ? 'Activo' : row.is_published ? 'Publicado' : 'Borrador')}</span>
+                        </span>
+                      </td>
+                      <td className="px-5 py-4 whitespace-nowrap text-right">
+                        <div className="flex items-center justify-end gap-1.5">
+                          {/* Ver Detalle Completo */}
+                          <button
+                            onClick={() => setViewingDetail(row)}
+                            className="p-1.5 rounded-lg bg-surface-container-low hover:bg-surface-container-high text-on-surface hover:text-primary transition-colors"
+                            title="Ver mensaje o detalle completo"
+                          >
+                            <Eye className="w-4 h-4" />
+                          </button>
+
+                          {/* WhatsApp Directo */}
+                          {targetPhone && (
+                            <a
+                              href={`https://wa.me/${targetPhone.replace(/[^0-9]/g, '')}?text=Hola%20${encodeURIComponent(row.name || row.full_name || '')},%20te%20escribimos%20de%20Diversamente%20respecto%20a%20tu%20mensaje.`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="p-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 hover:bg-emerald-100 transition-colors"
+                              title="Responder por WhatsApp"
+                            >
+                              <MessageSquare className="w-4 h-4" />
+                            </a>
+                          )}
+
+                          {/* Email Directo */}
+                          {targetEmail && (
+                            <a
+                              href={`mailto:${targetEmail}?subject=Respuesta%20Diversamente:%20${encodeURIComponent(row.topic || row.title || 'Tu mensaje')}`}
+                              className="p-1.5 rounded-lg bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
+                              title="Responder por Correo Electrónico"
+                            >
+                              <Mail className="w-4 h-4" />
+                            </a>
+                          )}
+
+                          {/* Botón Eliminar Permanente */}
+                          <button
+                            onClick={() => handleDeleteItem(row)}
+                            className="p-1.5 rounded-lg bg-red-50 dark:bg-red-950/40 text-red-600 dark:text-red-400 hover:bg-red-100 transition-colors"
+                            title="Eliminar este registro permanentemente"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
                         </div>
-                      )}
-                    </td>
-                    <td className="px-5 py-4 whitespace-nowrap">
-                      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-semibold bg-secondary-container text-on-secondary-container">
-                        <CheckCircle className="w-3 h-3" />
-                        <span>{row.role || row.status || (row.is_active !== undefined ? 'Activo' : row.is_published ? 'Publicado' : 'Borrador')}</span>
-                      </span>
-                    </td>
-                  </tr>
-                ))}
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
@@ -1348,6 +1457,124 @@ export default function AdminPortalPage() {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Modal 5: Ver Detalle Completo de Mensaje / Registro */}
+      {viewingDetail && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-surface-dim/80 backdrop-blur-md animate-fadeIn"
+          role="dialog"
+          aria-modal="true"
+        >
+          <div className="relative w-full max-w-lg bg-surface rounded-3xl p-6 sm:p-8 shadow-2xl border border-border max-h-[90vh] overflow-y-auto">
+            <button
+              onClick={() => setViewingDetail(null)}
+              className="absolute top-5 right-5 p-2 rounded-full text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors"
+              aria-label="Cerrar modal"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <div className="mb-5 pb-4 border-b border-border">
+              <span className="text-[10px] font-label uppercase tracking-widest text-primary font-bold px-2.5 py-1 rounded-full bg-primary/10 border border-primary/20 inline-block mb-2">
+                {viewingDetail.topic || viewingDetail.type || viewingDetail.program_name || 'Mensaje de Contacto'}
+              </span>
+              <h3 className="text-xl font-headline font-bold text-on-surface">
+                {viewingDetail.name || viewingDetail.full_name || viewingDetail.title || viewingDetail.donor_name || 'Detalle del Registro'}
+              </h3>
+              <p className="text-xs font-mono text-on-surface-variant mt-0.5">
+                📅 {viewingDetail.created_at ? new Date(viewingDetail.created_at).toLocaleString('es-CO') : 'Reciente'}
+              </p>
+            </div>
+
+            <div className="space-y-3.5 text-xs font-body">
+              {/* Contact details */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 p-3.5 bg-surface-container-low rounded-2xl border border-border">
+                <div>
+                  <span className="text-[10px] font-label uppercase font-bold text-on-surface-variant block">Correo:</span>
+                  <span className="font-mono text-on-surface font-semibold">{viewingDetail.email || viewingDetail.donor_email || 'No registrado'}</span>
+                </div>
+                <div>
+                  <span className="text-[10px] font-label uppercase font-bold text-on-surface-variant block">Teléfono / WhatsApp:</span>
+                  <span className="font-mono text-on-surface font-semibold">{viewingDetail.phone || viewingDetail.donor_phone || 'No registrado'}</span>
+                </div>
+              </div>
+
+              {/* Extra details if available */}
+              {viewingDetail.city && (
+                <div>
+                  <span className="text-[10px] font-label uppercase font-bold text-on-surface-variant block">Ciudad:</span>
+                  <span className="text-on-surface">{viewingDetail.city}</span>
+                </div>
+              )}
+
+              {viewingDetail.occupation && (
+                <div>
+                  <span className="text-[10px] font-label uppercase font-bold text-on-surface-variant block">Ocupación / Profesión:</span>
+                  <span className="text-on-surface">{viewingDetail.occupation}</span>
+                </div>
+              )}
+
+              {viewingDetail.skills && viewingDetail.skills.length > 0 && (
+                <div>
+                  <span className="text-[10px] font-label uppercase font-bold text-on-surface-variant block mb-1">Habilidades:</span>
+                  <div className="flex flex-wrap gap-1">
+                    {viewingDetail.skills.map((s: string, idx: number) => (
+                      <span key={idx} className="px-2 py-0.5 rounded-md bg-surface border border-border text-[10px] text-primary">
+                        {s}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Full message / content */}
+              <div>
+                <span className="text-[10px] font-label uppercase font-bold text-on-surface-variant block mb-1">
+                  Mensaje / Solicitud Completa:
+                </span>
+                <div className="p-4 bg-surface-container-lowest rounded-2xl border border-border text-on-surface leading-relaxed whitespace-pre-wrap max-h-60 overflow-y-auto">
+                  {viewingDetail.message || viewingDetail.description || viewingDetail.motivation || viewingDetail.notes || 'Sin contenido de texto.'}
+                </div>
+              </div>
+            </div>
+
+            {/* Quick Actions in Detail Modal */}
+            <div className="mt-6 pt-4 border-t border-border flex flex-wrap items-center justify-between gap-3">
+              <button
+                onClick={() => handleDeleteItem(viewingDetail)}
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-red-50 dark:bg-red-950/40 text-red-600 dark:text-red-400 hover:bg-red-100 border border-red-200/60 text-xs font-label font-semibold transition-colors"
+              >
+                <Trash2 className="w-3.5 h-3.5" />
+                <span>Eliminar Mensaje</span>
+              </button>
+
+              <div className="flex items-center gap-2">
+                {(viewingDetail.phone || viewingDetail.donor_phone) && (
+                  <a
+                    href={`https://wa.me/${(viewingDetail.phone || viewingDetail.donor_phone).replace(/[^0-9]/g, '')}?text=Hola%20${encodeURIComponent(viewingDetail.name || viewingDetail.full_name || '')},%20te%20escribimos%20de%20Diversamente%20respecto%20a%20tu%20mensaje.`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-label font-semibold transition-all shadow-xs"
+                  >
+                    <MessageSquare className="w-3.5 h-3.5" />
+                    <span>WhatsApp</span>
+                  </a>
+                )}
+
+                {(viewingDetail.email || viewingDetail.donor_email) && (
+                  <a
+                    href={`mailto:${viewingDetail.email || viewingDetail.donor_email}?subject=Respuesta%20Diversamente:%20${encodeURIComponent(viewingDetail.topic || viewingDetail.title || 'Tu mensaje')}`}
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-primary text-on-primary text-xs font-label font-semibold hover:opacity-90 transition-all shadow-xs"
+                  >
+                    <Mail className="w-3.5 h-3.5" />
+                    <span>Responder</span>
+                  </a>
+                )}
+              </div>
+            </div>
           </div>
         </div>
       )}

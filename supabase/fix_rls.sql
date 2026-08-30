@@ -349,6 +349,12 @@ CREATE POLICY "Solo admin puede editar mensajes"
     TO authenticated
     USING (public.is_admin());
 
+DROP POLICY IF EXISTS "Solo admin puede borrar mensajes" ON public.contact_messages;
+CREATE POLICY "Solo admin puede borrar mensajes"
+    ON public.contact_messages FOR DELETE
+    TO authenticated
+    USING (public.is_admin());
+
 DROP POLICY IF EXISTS "Permitir envio publico de consultas de programas" ON public.program_inquiries;
 CREATE POLICY "Permitir envio publico de consultas de programas"
     ON public.program_inquiries FOR INSERT
@@ -358,6 +364,12 @@ CREATE POLICY "Permitir envio publico de consultas de programas"
 DROP POLICY IF EXISTS "Solo admin puede leer consultas" ON public.program_inquiries;
 CREATE POLICY "Solo admin puede leer consultas"
     ON public.program_inquiries FOR SELECT
+    TO authenticated
+    USING (public.is_admin());
+
+DROP POLICY IF EXISTS "Solo admin puede borrar consultas" ON public.program_inquiries;
+CREATE POLICY "Solo admin puede borrar consultas"
+    ON public.program_inquiries FOR DELETE
     TO authenticated
     USING (public.is_admin());
 
@@ -373,6 +385,12 @@ CREATE POLICY "Solo admin puede leer voluntarios"
     TO authenticated
     USING (public.is_admin());
 
+DROP POLICY IF EXISTS "Solo admin puede borrar voluntarios" ON public.volunteers;
+CREATE POLICY "Solo admin puede borrar voluntarios"
+    ON public.volunteers FOR DELETE
+    TO authenticated
+    USING (public.is_admin());
+
 DROP POLICY IF EXISTS "Permitir registrar intencion de donacion" ON public.donations;
 CREATE POLICY "Permitir registrar intencion de donacion"
     ON public.donations FOR INSERT
@@ -385,6 +403,12 @@ CREATE POLICY "Solo admin puede ver donaciones"
     TO authenticated
     USING (public.is_admin());
 
+DROP POLICY IF EXISTS "Solo admin puede borrar donaciones" ON public.donations;
+CREATE POLICY "Solo admin puede borrar donaciones"
+    ON public.donations FOR DELETE
+    TO authenticated
+    USING (public.is_admin());
+
 DROP POLICY IF EXISTS "Permitir suscripcion publica a newsletter" ON public.newsletter_subscribers;
 CREATE POLICY "Permitir suscripcion publica a newsletter"
     ON public.newsletter_subscribers FOR INSERT
@@ -394,6 +418,12 @@ CREATE POLICY "Permitir suscripcion publica a newsletter"
 DROP POLICY IF EXISTS "Solo admin puede ver lista de newsletter" ON public.newsletter_subscribers;
 CREATE POLICY "Solo admin puede ver lista de newsletter"
     ON public.newsletter_subscribers FOR SELECT
+    TO authenticated
+    USING (public.is_admin());
+
+DROP POLICY IF EXISTS "Solo admin puede borrar suscriptores newsletter" ON public.newsletter_subscribers;
+CREATE POLICY "Solo admin puede borrar suscriptores newsletter"
+    ON public.newsletter_subscribers FOR DELETE
     TO authenticated
     USING (public.is_admin());
 
