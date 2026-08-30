@@ -66,7 +66,7 @@ export default function ContactoPage() {
                 <div>
                   <div className="font-label font-bold text-xs uppercase text-on-surface-variant">Teléfono / WhatsApp</div>
                   <a href="tel:+573185713991" className="hover:text-primary transition-colors">
-                    +57 315 048 84 57
+                    +57 318 571 39 91
                   </a>
                 </div>
               </li>
@@ -93,7 +93,7 @@ export default function ContactoPage() {
             {/* Direct WhatsApp CTA */}
             <div className="mt-6 pt-6 border-t border-border flex flex-col gap-2.5">
               <a
-                href="https://wa.me/573185713991?text=Hola,%20me%20gustar%C3%ADa%20recibir%20informaci%C3%B3n%20sobre%20los%20programas%20de%20Diversamente"
+                href="https://wa.me/573150488457?text=Hola,%20me%20gustar%C3%ADa%20recibir%20informaci%C3%B3n%20sobre%20los%20programas%20de%20Diversamente"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-label text-sm font-semibold py-3 rounded-xl shadow-sm transition-all active:scale-95"
