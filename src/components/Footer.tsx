@@ -119,7 +119,7 @@ export default function Footer() {
                 className="flex items-center gap-2.5 hover:text-primary transition-colors"
               >
                 <Phone className="w-4 h-4 text-primary flex-shrink-0" />
-                <span>+57 318 571 39 91</span>
+                <span>+57 315 048 84 57</span>
               </a>
               <div className="flex items-center gap-2.5">
                 <MapPin className="w-4 h-4 text-primary flex-shrink-0" />

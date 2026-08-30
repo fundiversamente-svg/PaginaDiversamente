@@ -66,7 +66,7 @@ export default function ContactoPage() {
                 <div>
                   <div className="font-label font-bold text-xs uppercase text-on-surface-variant">Teléfono / WhatsApp</div>
                   <a href="tel:+573185713991" className="hover:text-primary transition-colors">
-                    +57 318 571 39 91
+                    +57 315 048 84 57
                   </a>
                 </div>
               </li>
