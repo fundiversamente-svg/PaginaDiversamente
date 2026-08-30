@@ -71,10 +71,30 @@ export default function ContactForm() {
           message: '',
         });
       } else {
-        showToast(res.error || 'Error al enviar el mensaje. Inténtalo de nuevo.', 'error');
+        // Fallback a ruta API de servidor si falla cliente
+        const apiRes = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(validation.data),
+        });
+        const apiData = await apiRes.json();
+
+        if (apiRes.ok && apiData.success) {
+          setIsSuccess(true);
+          showToast('¡Mensaje enviado con éxito! Nos comunicaremos contigo pronto.', 'success');
+          setFormData({
+            name: '',
+            email: '',
+            phone: '',
+            topic: 'Consulta General',
+            message: '',
+          });
+        } else {
+          showToast(apiData.error || res.error || 'Error al enviar el mensaje', 'error');
+        }
       }
     } catch {
-      showToast('Ocurrió un error inesperado al conectar con el servidor', 'error');
+      showToast('Ocurrió un error al conectar con el servidor', 'error');
     } finally {
       setLoading(false);
     }

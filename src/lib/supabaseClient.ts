@@ -17,9 +17,9 @@ export const supabase = isSupabaseConfigured
   : null;
 
 /**
- * Función auxiliar segura y ultra-resiliente para registrar datos.
- * Si Supabase está conectado pero aún no se han creado las tablas o políticas RLS en el SQL Editor,
- * guarda de respaldo localmente sin romper la experiencia del usuario.
+ * Función auxiliar para registrar datos directamente en Supabase.
+ * IMPORTANTE: No ejecuta .select() al insertar para permitir que usuarios anónimos
+ * guarden registros en tablas con RLS donde solo tienen permiso de INSERT.
  */
 export async function safeInsert<T extends keyof Database['public']['Tables']>(
   table: T,
@@ -27,31 +27,18 @@ export async function safeInsert<T extends keyof Database['public']['Tables']>(
 ): Promise<{ success: boolean; data?: any; error?: string; isMock?: boolean; warning?: string }> {
   if (supabase && isSupabaseConfigured) {
     try {
-      const { data, error } = await (supabase.from(table) as any).insert([record]).select().single();
+      // Inserción directa limpia sin .select() para evitar conflictos de RLS SELECT con roles anon
+      const { data, error } = await (supabase.from(table) as any).insert([record]);
       
       if (!error) {
-        return { success: true, data };
+        return { success: true, data: data || record };
       }
 
-      console.warn(`[Supabase Aviso en ${table}]:`, error.message);
-      
-      // Si la tabla no existe (42P01) o falta política RLS (42501), guardar en respaldo local
-      if (error.code === '42P01' || error.code === '42501' || error.message?.includes('relation') || error.message?.includes('policy')) {
-        console.info(`[Fallback Local Activado para ${table}] debido a que falta ejecutar el script SQL en Supabase.`);
-        const localSaved = saveToLocal(table, record);
-        return {
-          success: true,
-          isMock: true,
-          data: localSaved,
-          warning: 'Registro guardado localmente. Recuerda ejecutar supabase/schema.sql en tu panel de Supabase.',
-        };
-      }
-
+      console.error(`[Supabase Error en tabla ${table}]:`, error.message, error);
       return { success: false, error: error.message };
     } catch (err: any) {
-      console.error(`[Supabase Exception en ${table}]:`, err);
-      const localSaved = saveToLocal(table, record);
-      return { success: true, isMock: true, data: localSaved };
+      console.error(`[Supabase Excepción en tabla ${table}]:`, err);
+      return { success: false, error: err.message || 'Error al conectar con la base de datos' };
     }
   }
 

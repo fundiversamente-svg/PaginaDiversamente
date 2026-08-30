@@ -28,34 +28,27 @@ export async function POST(request: Request) {
             message,
             status: 'unread',
           },
-        ])
-        .select()
-        .single();
+        ]);
 
       if (error) {
         console.error('Supabase contact insert error:', error);
         return NextResponse.json(
-          { error: 'Error al guardar el mensaje en la base de datos' },
+          { error: 'Error al guardar el mensaje en Supabase: ' + error.message },
           { status: 500 }
         );
       }
 
-      return NextResponse.json({ success: true, data }, { status: 201 });
+      return NextResponse.json({ success: true, data: { name, email, topic } }, { status: 201 });
     }
 
-    // Modo simulación si aún no hay credenciales de Supabase
     return NextResponse.json(
-      {
-        success: true,
-        isMock: true,
-        message: 'Mensaje recibido en modo simulación (configura tus llaves de Supabase en .env.local)',
-      },
-      { status: 200 }
+      { error: 'Base de datos de Supabase no configurada en el servidor' },
+      { status: 500 }
     );
-  } catch (error) {
+  } catch (error: any) {
     console.error('Contact API Error:', error);
     return NextResponse.json(
-      { error: 'Error interno del servidor' },
+      { error: 'Error interno del servidor: ' + (error?.message || 'Desconocido') },
       { status: 500 }
     );
   }
